@@ -1,0 +1,13 @@
+
+starstep clears collidingWith instead of making new hitboxes
+
+speedmultiplieradditive is not used
+
+- altar: put first tri at 90 +- ( (theta / 2) + 120 )   
+
+insight:
+
+Graphics objects are like an infinite size sheet of paper, can rotate and move around
+
+to convert vector components to theta, use atan( y / x)
+if x is negative, it will give the opposite angle. so, add Math.PI to the result if necessary
