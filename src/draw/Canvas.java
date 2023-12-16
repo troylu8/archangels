@@ -20,7 +20,7 @@ public class Canvas extends JPanel {
     public static Canvas panel;
     
     /** how far the player can see */
-    public static Rectangle fov = new Rectangle(0, 0, 800, 450);
+    public static Rectangle fov = new Rectangle(0, 0, 1200, 675);
 
     /** actual view size on the panel, excluding black bars */
     public static Rectangle camera = new Rectangle(0, 0, 800, 450);
@@ -53,8 +53,6 @@ public class Canvas extends JPanel {
         Integer[] layers = new Integer[Entity.entityLayers.keySet().size()];
         Entity.entityLayers.keySet().toArray(layers);
         Arrays.sort(layers);
-
-        System.out.println(Util.arrStr(layers));
 
         for (int l : layers) {
 

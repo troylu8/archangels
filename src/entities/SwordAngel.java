@@ -1,14 +1,16 @@
 package src.entities;
 
+import src.draw.Canvas;
 import src.entities.attack.EnemyAttack;
 import src.shapes.Collidable;
 import src.shapes.Polygon;
+import src.util.Util;
 
 public class SwordAngel extends Enemy {
 
     public SwordAngel(double x, double y) {
-        super("oriental angel.png", x, y, 800, 0.2,
-            4000, 600, 100
+        super("oriental angel.png", x, y, 800, 0.25,
+            2500, 600, 100
         );
 
         setSize(0.2);
@@ -28,12 +30,8 @@ public class SwordAngel extends Enemy {
                 caster.unlockHeading();
             } };
 
-            hitboxes.add(new Polygon(
-                new double[] {x + 120, x - 60},
-                new double[] {x -   0, x - 60},
-                new double[] {x +   0, x + 60},
-                new double[] {x + 120, x + 60}
-            ));
+            hitboxes.add(new Polygon(4));
+
         }
 
         @Override
@@ -64,10 +62,10 @@ public class SwordAngel extends Enemy {
         @Override
         public void updateHitboxes() {
             Polygon rect = (Polygon) hitboxes.get(0);
-            rect.vertexes[0] = new double[] {caster.x + 120, caster.y - 60};
-            rect.vertexes[1] = new double[] {caster.x -   0, caster.y - 60};
-            rect.vertexes[2] = new double[] {caster.x +   0, caster.y + 60};
-            rect.vertexes[3] = new double[] {caster.x + 120, caster.y + 60};
+            rect.vertexes[0] = new double[] {caster.x +  caster.ATK_RANGE, caster.y - 80};
+            rect.vertexes[1] = new double[] {caster.x -                 0, caster.y - 80};
+            rect.vertexes[2] = new double[] {caster.x -                 0, caster.y + 80};
+            rect.vertexes[3] = new double[] {caster.x +  caster.ATK_RANGE, caster.y + 80};
 
             double rot = getRotation();
             if (getHeading() == -1) rot += Math.PI;

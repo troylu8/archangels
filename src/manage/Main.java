@@ -26,6 +26,7 @@ public class Main { // out of bounds seed 1702397158781
         
         Player.player = new Player(1500, 1500);        
         Player.player.enable();
+        System.out.println("f " + Entity.entityLayers);
 
         RoomNode.generateWorld(System.currentTimeMillis());
         
@@ -44,7 +45,7 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
     
-        new DebugAction(KeyEvent.VK_6, () -> { System.out.println(Player.player.hornsAndTail.visible); });
+        new DebugAction(KeyEvent.VK_6, () -> { System.out.println(Player.player.hornsAndTail.getDrawLayer()); });
     }
 
 }

@@ -1,6 +1,7 @@
 package src.manage;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import src.draw.Canvas;
 import src.entities.*;
@@ -111,6 +112,7 @@ public class Clock {
                     Focus.updateFocusedEnemy();
                     
                     Group.updateAll();
+                    Entity.clearEmptyEntityLayers();
 
                     Canvas.panel.repaint();
 

@@ -29,7 +29,7 @@ public class Player extends Being {
     public boolean parryBodyActive;
     
     public Player(int x, int y) {
-        super("characters\\demon.png", x, y, 3, 0.7);
+        super("characters\\demon.png", x, y, 3, 1.1);
         setSize(4);
         
         playerCircle = new Circle(x, y, 25);

@@ -10,8 +10,8 @@ public class Group<Type> implements Iterable<Type> {
     public HashSet<Type> set;
     
     /** next frame, add/remove these items */ 
-    private HashSet<Type> factory;
-    private HashSet<Type> trash;
+    public HashSet<Type> factory;
+    public HashSet<Type> trash;
 
     public Group() {
         set = new HashSet<>();

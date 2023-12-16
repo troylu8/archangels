@@ -2,6 +2,7 @@ package src.entities.attack;
 
 import src.entities.*;
 import src.entities.accessory.SlashFX;
+import src.input.PlayerControls;
 import src.manage.Clock;
 import src.shapes.*;
 import src.util.Util;
@@ -110,6 +111,9 @@ public class PlayerSlash extends PlayerAttack {
 
         Player.player.slowDown(0.33, 300);
         b.slowDown(0.1, 300);
+
+        // reset dash cd
+        PlayerControls.DashAction.timeOfLastDash = 0;
     }
 
     public void update(long deltaTime) {

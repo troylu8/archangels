@@ -13,6 +13,7 @@ public class Polygon extends Hitbox {
     public Polygon(double[]... vertexes) {
         this.vertexes = vertexes;
     }
+    public Polygon(int vertexCount) { vertexes = new double[vertexCount][2]; }
 
     @Override
     public boolean collidesWithCircle(Circle circle) {

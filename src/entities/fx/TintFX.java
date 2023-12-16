@@ -16,7 +16,7 @@ public class TintFX extends Entity {
     public TintFX() {
         super("none", Player.player.x, Player.player.y);
         opacity = 0.5f;
-        setDrawLayer(1);
+        setDrawLayer(0);
     }
 
     Thread fadeThread = new Thread();

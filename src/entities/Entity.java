@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import src.draw.Canvas;
 import src.entities.ui.UI;
@@ -94,10 +95,22 @@ public class Entity {
         this(spriteFilename, x, y, 0.5, 0.5, 1);
     }
 
+    public static void clearEmptyEntityLayers() {
+        int[] trash = new int[entityLayers.size()];
+        int i = 0;
+        for (Entry<Integer, Group<Entity>> layer : entityLayers.entrySet()) {
+            if (layer.getValue().set.isEmpty()) 
+                trash[i++] = layer.getKey();
+        }
+        for (int j = 0; j < i; j++) 
+            entityLayers.remove(trash[j]);
+    }
+
     public void setDrawLayer(int layer) {
+        if (this.drawLayer == layer) return;
         removeFromLayerGroup();
         drawLayer = layer;
-        addToLayerGroup();
+        if (enabled) addToLayerGroup();
     }
     protected void addToLayerGroup() {
         Group<Entity> layerGroup = entityLayers.getOrDefault(drawLayer, new Group<Entity>());
@@ -106,9 +119,8 @@ public class Entity {
     } 
     protected void removeFromLayerGroup() {
         Group<Entity> layerGroup = entityLayers.get(drawLayer);
+        if (layerGroup == null) return;
         layerGroup.queueToRemove(this);
-        if (layerGroup.set.isEmpty())
-            entityLayers.remove(drawLayer);
     }  
     public int getDrawLayer() { return drawLayer; }
 

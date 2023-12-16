@@ -179,66 +179,70 @@ public class PlayerControls {
         static final double DASH_MULTIPLIER = 4;
         public static final int DASH_TIME = 75;
         public static boolean dashing;
+
+        public static final int COOLDOWN = 500;
+        public static long timeOfLastDash = 0;
+
     
         private DashAction(int keyCode) { super(keyCode); }
 
         @Override
         public void onKeyPress() {
-            if (dashing) return;
+            if (System.currentTimeMillis() - timeOfLastDash < COOLDOWN) return;
+            timeOfLastDash = System.currentTimeMillis();
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    dashing = true;
+            new Thread( () -> {
 
-                    PlayerDashAttack dashAttack = new PlayerDashAttack();
-                    dashAttack.enable();
+                dashing = true;
 
-                    if (EnemyAttack.isPlayerInPremonition() != null) {
+                PlayerDashAttack dashAttack = new PlayerDashAttack();
+                dashAttack.enable();
+
+                if (EnemyAttack.isPlayerInPremonition() != null) {
+                    new Thread( () -> {
+
                         new Thread( () -> {
-    
-                            new Thread( () -> {
-                                Util.sleepTilInterrupt(PlayerControls.DashAction.DASH_TIME / 2);
-                                Player.player.speedMultiplier /= 5;
-                                Util.sleepTilInterrupt(200);
-                                Player.player.speedMultiplier *= 5;
-                            }, "slow player on premonition thread").start();
+                            Util.sleepTilInterrupt(PlayerControls.DashAction.DASH_TIME / 2);
+                            Player.player.speedMultiplier /= 5;
+                            Util.sleepTilInterrupt(200);
+                            Player.player.speedMultiplier *= 5;
+                        }, "slow player on premonition thread").start();
 
-                            Clock.pause(Clock.NON_PLAYER_ENTITIES);
-                            Canvas.setFOVsizeByWidth(1100);
-                            new TintFX().enable();
-                            Util.sleepTilInterrupt(1000);
-                            Canvas.setFOVsizeByWidth(800);
-                            Clock.unpause();
-    
-                        }, "pause time on premonition thread").start();
-                    }
-                        
-                    Player.player.slowDownThread.interrupt();
-                    
+                        Clock.pause(Clock.NON_PLAYER_ENTITIES);
+                        Canvas.setFOVsizeByWidth(1500);
+                        new TintFX().enable();
+                        Util.sleepTilInterrupt(1000);
+                        Canvas.setFOVsizeByWidth(1200);
+                        Clock.unpause();
 
-                    if (Player.player.trajectory[0] == 0 && Player.player.trajectory[1] == 0) {
-                        Player.player.lockHeading();
-                        Player.player.push(Player.player.x + Player.player.getHeading(), Player.player.y, 5);
-                    }
-
-                    Player.player.speedMultiplier *= DASH_MULTIPLIER;
-                    Player.player.makeInvincible(DASH_TIME + 100);
-
-                    // afterimage time lasts a little after dash ends
-                    AfterimageFX.setActiveFor(DASH_TIME + 50);
-                    Util.sleepTilInterrupt(DASH_TIME);
-
-                    Player.player.speedMultiplier /= DASH_MULTIPLIER;
-
-                    Player.player.unlockHeading();
-
-                    dashAttack.disable();
-
-                    dashing = false;
-
+                    }, "pause time on premonition thread").start();
                 }
+                    
+                Player.player.slowDownThread.interrupt();
+                
+
+                if (Player.player.trajectory[0] == 0 && Player.player.trajectory[1] == 0) {
+                    Player.player.lockHeading();
+                    Player.player.push(Player.player.x + Player.player.getHeading(), Player.player.y, 5);
+                }
+
+                Player.player.speedMultiplier *= DASH_MULTIPLIER;
+                Player.player.makeInvincible(DASH_TIME + 100);
+
+                // afterimage time lasts a little after dash ends
+                AfterimageFX.setActiveFor(DASH_TIME + 50);
+                Util.sleepTilInterrupt(DASH_TIME);
+
+                Player.player.speedMultiplier /= DASH_MULTIPLIER;
+
+                Player.player.unlockHeading();
+
+                dashAttack.disable();
+
+                dashing = false;
+
             }, "player dashing thread").start();
+                
         }
 
         @Override
@@ -295,7 +299,7 @@ public class PlayerControls {
             if (Clock.isPaused()) {
                 new PlayerStarStep().enable();
                 Clock.unpause();
-                Canvas.setFOVsizeByWidth(800);
+                Canvas.setFOVsizeByWidth(1200);
             }
             else {
                 if (PlayerStarStep.getCharge() >= 3) {
