@@ -21,7 +21,8 @@ public class PlayerSlash extends PlayerAttack {
     
     public PlayerSlash(double facingX, double facingY, boolean doLunge) {
         super("scythe slash.gif", Player.player.x, Player.player.y, 10);
-        setSize(6);
+        setSize(2);
+        setAnchor(0.7, 0.5);
         clockAffectedLevel = Clock.INCLUDING_PLAYER;
 
         facing = new double[] {facingX, facingY};
@@ -63,7 +64,7 @@ public class PlayerSlash extends PlayerAttack {
                 Player.player.setHeading(gap[0]);
 
                 setPosition(Player.player.x, Player.player.y);
-                transform(gap[0], gap[1]);
+                // transform(gap[0], gap[1]);
                 
 
                 addToAllEntities();
@@ -101,19 +102,25 @@ public class PlayerSlash extends PlayerAttack {
 
     @Override 
     public void onCollideEnter(Collidable other) {
-        Being b = (Being) other;
+        Being enemy = (Being) other;
+        Player player = Player.player;
 
-        new SlashFX(b, 3, Util.directionToTheta(b.x - Player.player.x, b.y - Player.player.y)).enable();
+        SlashFX.createSlash(enemy, 3.5, Util.directionToTheta(enemy.x - player.x, enemy.y - player.y), Clock.isPaused());
+        new Thread(() -> {
+            doHitlag(enemy, player);
 
-        b.push(b.x + (b.x - Player.player.x), b.y + (b.y - Player.player.y), getKnockback());
+            enemy.push(enemy.x + (enemy.x - player.x), enemy.y + (enemy.y - player.y), getKnockback());
         
-        Player.player.push(Player.player.x + (Player.player.x - b.x), Player.player.y + (Player.player.y - b.y), 1);
+            player.push(player.x + (player.x - enemy.x), player.y + (player.y - enemy.y), 1);
 
-        Player.player.slowDown(0.33, 300);
-        b.slowDown(0.1, 300);
+            player.slowDown(0.33, 300);
+            enemy.slowDown(0.1, 300);
 
-        // reset dash cd
-        PlayerControls.DashAction.timeOfLastDash = 0;
+            // reset dash cd
+            PlayerControls.DashAction.timeOfLastDash = 0;
+
+        }, "hitlag then knockback after slash thread").start();
+        
     }
 
     public void update(long deltaTime) {

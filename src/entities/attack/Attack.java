@@ -1,8 +1,10 @@
 package src.entities.attack;
 
+import src.entities.Being;
 import src.entities.MovingBody;
 import src.shapes.Collidable;
 import src.shapes.HitboxList;
+import src.util.Util;
 
 public abstract class Attack extends MovingBody implements Collidable {
 
@@ -28,4 +30,19 @@ public abstract class Attack extends MovingBody implements Collidable {
     }
 
     public abstract double getKnockback();
+
+    public void doHitlag(Being b1, Being b2, int duration) {
+        if (animation != null) animation.pause();
+        b1.disableMovement();
+        b2.disableMovement();
+
+        Util.sleepTilInterrupt(duration);
+
+        if (animation != null) animation.play();
+        b1.enableMovement();
+        b2.enableMovement();
+    }
+    public void doHitlag(Being b1, Being b2) {
+        doHitlag(b1, b2, 80);
+    }
 }

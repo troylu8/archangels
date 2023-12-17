@@ -130,7 +130,7 @@ public class Map extends UI {
                 
                 if (RoomNode.playerQ == room.getQ() && RoomNode.playerR == room.getR() && RoomNode.playerS == room.getS())
                     g.setColor(CURRENT_COLOR);
-                else if (room.getCleared())
+                else if (room.isCleared())
                     g.setColor(CLEARED_COLOR);
                 else if (room.getRadius() >= RoomNode.TOTAL_RADIUS - 1)
                     g.setColor(EDGE_COLOR);

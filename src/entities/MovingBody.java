@@ -6,6 +6,8 @@ import src.util.Util;
 
 public class MovingBody extends Entity {
 
+    private boolean movementEnabled = true;
+
     public final double BASE_SPEED;
 
     public double speedMultiplier = 1;
@@ -21,6 +23,16 @@ public class MovingBody extends Entity {
         trajectory = new double[] {0,0};
         forces = new HashSet<>();
     }
+
+    public void enableMovement() { 
+        movementEnabled = true;
+        unlockHeading();
+    }
+    public void disableMovement() { 
+        movementEnabled = false; 
+        lockHeading();
+    }
+    public boolean isMovementEnabled() { return movementEnabled; }
 
     final Object forcesLock = new Object();
 
@@ -88,7 +100,7 @@ public class MovingBody extends Entity {
 
     @Override
     public void update(long deltaTime) {
-        if (Clock.isPaused() && affectedByClock()) return;
+        if (!movementEnabled || (Clock.isPaused() && affectedByClock()) ) return;
         
         double[] totalForces = {0, 0};
         synchronized (forcesLock) {

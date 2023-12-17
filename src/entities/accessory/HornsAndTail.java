@@ -12,12 +12,6 @@ public class HornsAndTail extends Accessory {
         disableOnRoomChange = false;
     }
 
-    @Override
-    public void enable() {
-        super.enable();
-        System.out.println(visible);
-    }
-
     public void setStage(int stage) {
         if (stage == 0) 
             visible = false;

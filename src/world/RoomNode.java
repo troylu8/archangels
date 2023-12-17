@@ -59,7 +59,7 @@ public class RoomNode {
     public int getQ() { return q; }
     public int getR() { return r; }
     public int getS() { return s; }
-    public boolean getCleared() { return cleared; }
+    public boolean isCleared() { return cleared; }
 
     public static void buildBridge(RoomNode r1, RoomNode r2) {
         int[] dir = {r2.q - r1.q, r2.r - r1.r, r2.s - r1.s};

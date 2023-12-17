@@ -29,7 +29,7 @@ public class Player extends Being {
     public boolean parryBodyActive;
     
     public Player(int x, int y) {
-        super("characters\\demon.png", x, y, 3, 1.1);
+        super("characters\\demon.png", x, y, 3, 0.8);
         setSize(4);
         
         playerCircle = new Circle(x, y, 25);
@@ -93,6 +93,7 @@ public class Player extends Being {
         EnemyAttack atk = (EnemyAttack) other;
 
         if (parryBodyActive) {
+            //TODO: tint screen on parry
 
             Canvas.screenshake(80, 2, 15);
             
@@ -101,7 +102,6 @@ public class Player extends Being {
                 Util.sleepTilInterrupt(250);
                 Clock.unpause();
             }, "freeze on parry thread").start();
-            
 
             final int slashReach = 120;
 

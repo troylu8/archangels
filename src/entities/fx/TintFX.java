@@ -11,12 +11,15 @@ import src.util.Util;
 
 public class TintFX extends Entity {
 
+    int timeBeforeFading;
+
     public static final Color COLOR = new Color(34, 32, 52);
 
-    public TintFX() {
+    public TintFX(int timeBeforeFading) {
         super("none", Player.player.x, Player.player.y);
         opacity = 0.5f;
         setDrawLayer(0);
+        this.timeBeforeFading = timeBeforeFading;
     }
 
     Thread fadeThread = new Thread();
@@ -26,7 +29,7 @@ public class TintFX extends Entity {
         super.enable();
 
         fadeThread = new Thread(() -> {
-            Util.sleepTilInterrupt(800);
+            Util.sleepTilInterrupt(timeBeforeFading);
 
             for (; opacity > 0; opacity = Math.max(0, opacity - 0.05f) ) 
                 Util.sleepTilInterrupt(Clock.adjustForClockSpeed(30));

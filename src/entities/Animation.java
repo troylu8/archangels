@@ -7,6 +7,7 @@ import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
+import src.entities.accessory.SlashFX;
 import src.manage.Clock;
 
 
@@ -94,7 +95,7 @@ public class Animation {
                 
                 int trueFrameTime;
                 frameEndTime = System.currentTimeMillis() + unfinishedFrameTime;
-                Thread.sleep( Math.max(unfinishedFrameTime, 0) );
+                Thread.sleep( Clock.adjustForClockSpeed(Math.max(unfinishedFrameTime, 0)) );
 
                 while (frame < totalFrames - 1) {  
 

@@ -1,9 +1,11 @@
 package src.entities.attack;
 
-import src.entities.Enemy;
-import src.entities.Player;
+import src.draw.Canvas;
+
+import src.entities.*;
 import src.entities.accessory.SlashFX;
 import src.input.PlayerMovementControls;
+import src.manage.Clock;
 import src.shapes.Circle;
 import src.shapes.Collidable;
 import src.util.Util;
@@ -34,9 +36,9 @@ public class PlayerDashAttack extends PlayerAttack {
         Enemy enemy = (Enemy) other;
 
         double dashDir = Util.directionToTheta(Player.player.trajectory[0], Player.player.trajectory[1]) + Math.PI / 2;
-        
-        new SlashFX(enemy, 5, dashDir + Util.rand(-Math.PI/6, Math.PI/6) ).enable();
+        SlashFX.createSlash(enemy, 5, dashDir + Util.rand(-Math.PI/6, Math.PI/6), Clock.isPaused());
 
+        Canvas.screenshake(120, 4, 30);
         // push in player heading direction if non-moving dash 
         // kb is done here instead of using getKnockback() in victim.onCollideEnter() as its in a special direction (not just away) 
         if (PlayerMovementControls.offset[0] == 0 && PlayerMovementControls.offset[1] == 0)

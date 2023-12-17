@@ -112,7 +112,7 @@ public class Canvas extends JPanel {
 
     private static Thread screenshakeThread = new Thread();
 
-    public static void screenshake(int duration, int strength, int delay) {
+    public static void screenshake(int duration, double strength, int delay) {
         screenshakeThread.interrupt();
 
         screenshakeThread = new Thread(() -> {

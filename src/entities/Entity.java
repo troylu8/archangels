@@ -98,12 +98,15 @@ public class Entity {
     public static void clearEmptyEntityLayers() {
         int[] trash = new int[entityLayers.size()];
         int i = 0;
-        for (Entry<Integer, Group<Entity>> layer : entityLayers.entrySet()) {
-            if (layer.getValue().set.isEmpty()) 
-                trash[i++] = layer.getKey();
+
+        synchronized(entityLayers) {
+            for (Entry<Integer, Group<Entity>> layer : entityLayers.entrySet()) {
+                if (layer.getValue().set.isEmpty()) 
+                    trash[i++] = layer.getKey();
+            }
+            for (int j = 0; j < i; j++) 
+                entityLayers.remove(trash[j]);
         }
-        for (int j = 0; j < i; j++) 
-            entityLayers.remove(trash[j]);
     }
 
     public void setDrawLayer(int layer) {
@@ -115,7 +118,8 @@ public class Entity {
     protected void addToLayerGroup() {
         Group<Entity> layerGroup = entityLayers.getOrDefault(drawLayer, new Group<Entity>());
         layerGroup.queueToAdd(this);
-        entityLayers.put(drawLayer, layerGroup);
+
+        synchronized(entityLayers) { entityLayers.put(drawLayer, layerGroup); }
     } 
     protected void removeFromLayerGroup() {
         Group<Entity> layerGroup = entityLayers.get(drawLayer);

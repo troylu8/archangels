@@ -175,6 +175,8 @@ public class PlayerControls {
     }
     
     public static class DashAction extends KeyPress {
+
+        public static final int DISTORTION_TIME = 2500;
     
         static final double DASH_MULTIPLIER = 4;
         public static final int DASH_TIME = 75;
@@ -210,8 +212,8 @@ public class PlayerControls {
 
                         Clock.pause(Clock.NON_PLAYER_ENTITIES);
                         Canvas.setFOVsizeByWidth(1500);
-                        new TintFX().enable();
-                        Util.sleepTilInterrupt(1000);
+                        new TintFX(DISTORTION_TIME).enable();
+                        Util.sleepTilInterrupt(DISTORTION_TIME);
                         Canvas.setFOVsizeByWidth(1200);
                         Clock.unpause();
 
@@ -287,6 +289,34 @@ public class PlayerControls {
         @Override
         public void onKeyRelease() {}
     
+    }
+
+    public static class CounterAction extends KeyPress {
+
+        private static Enemy target = null;
+
+        private CounterAction(int keyCode) { super(keyCode); }
+
+        public static void enable(Enemy target) {
+            // set keybind to counter
+            CounterAction.target = target;
+            // disable focus changing
+            Focus.setFocus(target);
+
+        }
+
+        @Override
+        public void onKeyPress() {
+            Player p = Player.player;
+
+            //disable movement controls
+            p.setTrajectoryFor(target.x, target.y);
+            p.speedMultiplier *= 5;
+            // stop when there
+        }
+
+        @Override
+        public void onKeyRelease() {}
     }
     
     public static class StarStepAction extends KeyPress {
