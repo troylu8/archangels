@@ -146,7 +146,7 @@ public class Entity {
         spriteBounds.setAnchor(anchorX, anchorY);
     }
     
-    public boolean affectedByClock() { return Clock.getAffected() >= clockAffectedLevel; }
+    public boolean affectedByClock() { return Clock.getPauseState() >= clockAffectedLevel; }
     public void waitTilUnaffectedByClock() {
         Clock.waitTilUnaffected(clockAffectedLevel);
     }

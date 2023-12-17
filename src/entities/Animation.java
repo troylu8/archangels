@@ -7,7 +7,6 @@ import javax.imageio.*;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 
-import src.entities.accessory.SlashFX;
 import src.manage.Clock;
 
 

@@ -16,7 +16,7 @@ public class Clock {
     public static final int NON_PLAYER_ENTITIES = 1;
     public static final int NONE = 0;
     
-    private static int affected;
+    public static int pauseState;
 
     public static final Object timePausedLock = new Object();
     public static final Object timeUnpausedLock = new Object();
@@ -31,12 +31,12 @@ public class Clock {
 
 
     public static void pause(int pauseState) { 
-        if (Clock.affected == pauseState) return;
+        if (Clock.pauseState == pauseState) return;
         if (pauseState == NONE) {
             unpause();
             return;
         }
-        Clock.affected = pauseState;
+        Clock.pauseState = pauseState;
         paused = true;
 
         if (pauseState >= Clock.INCLUDING_PLAYER) {
@@ -52,8 +52,8 @@ public class Clock {
         }
     }
     public static void unpause() { 
-        if (Clock.affected == NONE) return;
-        Clock.affected = NONE;
+        if (Clock.pauseState == NONE) return;
+        Clock.pauseState = NONE;
         paused = false;
 
         Player.player.unlockHeading();
@@ -69,12 +69,12 @@ public class Clock {
         synchronized (timeUnpausedLock) { timeUnpausedLock.notifyAll(); }
 
     }
-    public static int getAffected() { return affected; }
+    public static int getPauseState() { return pauseState; }
     public static boolean isPaused() { return paused; }
 
     public static void waitTilUnaffected(int clockAffectedLevel) {
         synchronized (timeUnpausedLock) { 
-            while (affected >= clockAffectedLevel) { 
+            while (pauseState >= clockAffectedLevel) { 
                 try { timeUnpausedLock.wait(); } 
                 catch (InterruptedException e) {} 
             } 

@@ -10,6 +10,7 @@ import javax.swing.KeyStroke;
 import src.draw.Canvas;
 import src.draw.Window;
 import src.entities.*;
+import src.entities.accessory.SlashFX;
 import src.entities.ui.FPS;
 import src.input.PlayerControls.DebugAction;
 import src.util.Util;
@@ -44,7 +45,12 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
     
-        new DebugAction(KeyEvent.VK_6, () -> { System.out.println(Player.player.hornsAndTail.getDrawLayer()); });
+        new DebugAction(KeyEvent.VK_6, () -> { 
+            new SwordAngel(Player.player.x, Player.player.x).enable();
+        });
+
+        // Clock.pauseState = 5;
+        // Clock.setSpeed(0.2);
     }
 
 }
