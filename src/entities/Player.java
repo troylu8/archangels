@@ -49,8 +49,9 @@ public class Player extends Being {
 
         hornsAndTail = new HornsAndTail();
         
-        // scytheAccessory = new Accessory("scythe accessory.png", this, 0.1, true);
+        // scytheAccessory = new Accessory("scythe.png", this, 0.1, true);
         // scytheAccessory.setSize(4);
+        // scytheAccessory.rotate(Math.toRadians(225));
 
         super.enable();
     }

@@ -21,8 +21,8 @@ public class PlayerSlash extends PlayerAttack {
     
     public PlayerSlash(double facingX, double facingY, boolean doLunge) {
         super("scythe slash.gif", Player.player.x, Player.player.y, 10);
-        setSize(2);
-        setAnchor(0.7, 0.5);
+        setSize(3.5);
+        setAnchor(0.5, 0.5);
         clockAffectedLevel = Clock.INCLUDING_PLAYER;
 
         facing = new double[] {facingX, facingY};
