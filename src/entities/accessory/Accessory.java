@@ -16,6 +16,8 @@ public class Accessory extends Entity {
         this.headingLinked = headingLinked;
 
         wearer.accessories.queueToAdd(this);
+
+        setDrawLayer(1);
     }
     public Accessory(String spriteFilename, Being wearer) {
         this(spriteFilename, wearer, 0.1, false);

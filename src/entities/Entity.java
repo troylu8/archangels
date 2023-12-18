@@ -19,6 +19,15 @@ public class Entity {
 
     public static Group<Entity> allEntities = new Group<>();
     
+    /**
+     * <p> higher layers are painted on top
+     * <p> 4 - interact tag
+     * <p> 3 - obstacle
+     * <p> 2 - default
+     * <p> 1 - accessory
+     * <p> 0 - gates
+     * <p> -1 - tint
+     */
     public static HashMap<Integer, Group<Entity>> entityLayers = new HashMap<>();
 
     public String spriteFilename;
@@ -280,13 +289,6 @@ public class Entity {
         if (localFOVratio != Canvas.FOVratio) 
             setSize(size);
 
-        // draw sprite bounds
-        if (Main.drawSpriteBounds) {                     
-            g.setColor((this instanceof UI)? Color.GREEN : Color.RED);
-            spriteBounds.draw(g, this instanceof UI);
-        }
-        
-
         int[] posOnCamera = getDrawPos();
 
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
@@ -299,12 +301,19 @@ public class Entity {
         g.rotate(rotation); 
 
         // if cornerDrawPos[0] == -5, then img is drawn 5px left of paper's upper left corner
-        int[] cornerDrawPos = {(int)( -sprite.getWidth() * anchor[0] * heading), (int) ( -sprite.getHeight() * anchor[1])};
+        int[] cornerDrawPos = {(int)( -sprite.getWidth() * ((heading > 0)? anchor[0] : 1 - anchor[0]) * heading), (int) ( -sprite.getHeight() * anchor[1])};
         g.drawImage(sprite,  cornerDrawPos[0], cornerDrawPos[1],  sprite.getWidth() * heading, sprite.getHeight(), null);
-
 
         g.setTransform(backup);
         
+        // draw sprite bounds
+        if (Main.drawSpriteBounds) {               
+            g.setColor(Color.ORANGE);
+            g.fillOval(posOnCamera[0] - 5, posOnCamera[1] - 5, 10, 10);
+                  
+            g.setColor((this instanceof UI)? Color.GREEN : Color.RED);
+            spriteBounds.draw(g, this instanceof UI);
+        }
 
     }
 

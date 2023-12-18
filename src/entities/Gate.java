@@ -26,7 +26,7 @@ public class Gate extends Entity implements Interactable {
 
         // center on tile
         setPosition(LandTiles.getTrueVal(tileX) + LandTiles.TILE_SIZE/2, LandTiles.getTrueVal(tileY + 1));
-        setDrawLayer(1);
+        setDrawLayer(0);
     }
 
     public static void open() {

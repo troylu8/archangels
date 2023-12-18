@@ -18,7 +18,7 @@ public class TintFX extends Entity {
     public TintFX(int timeBeforeFading) {
         super("none", Player.player.x, Player.player.y);
         opacity = 0.5f;
-        setDrawLayer(0);
+        setDrawLayer(-1);
         this.timeBeforeFading = timeBeforeFading;
     }
 

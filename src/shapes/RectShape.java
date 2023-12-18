@@ -15,7 +15,7 @@ import src.util.Util;
 */
 public class RectShape extends Polygon {
 
-    private Rectangle rect;
+    public Rectangle rect;
 
     private double rotation;
 
@@ -129,7 +129,7 @@ public class RectShape extends Polygon {
     public void rotate(double radiansCW) { setRotation(rotation += radiansCW); }
 
     /** returned vertexes start at upper left corner and go clockwise */
-    private static double[][] getPolyFromRect(Rectangle r) {
+    public static double[][] getPolyFromRect(Rectangle r) {
         return new double[][] {
             {r.x, r.y},
             {r.x + r.width, r.y},
@@ -138,7 +138,7 @@ public class RectShape extends Polygon {
         };
     }
     /** assumes vertexes start at upper left corner and go clockwise */
-    private static Rectangle getRectFromPoly(double[][] vertexes) {
+    public static Rectangle getRectFromPoly(double[][] vertexes) {
         return new Rectangle(
             (int) vertexes[0][0], 
             (int) vertexes[0][1], 

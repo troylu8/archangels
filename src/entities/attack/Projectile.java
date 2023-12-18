@@ -1,6 +1,7 @@
 package src.entities.attack;
 
 import src.entities.Enemy;
+import src.input.DashAction;
 import src.input.PlayerControls;
 import src.manage.Clock;
 import src.util.Util;
@@ -123,7 +124,7 @@ public abstract class Projectile extends EnemyAttack {
 
     @Override
     public void onCollideEnter(Collidable other) {
-        if (!PlayerControls.DashAction.dashing)
+        if (!DashAction.dashing)
             dissipate();
     }
     

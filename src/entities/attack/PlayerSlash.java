@@ -2,7 +2,7 @@ package src.entities.attack;
 
 import src.entities.*;
 import src.entities.accessory.SlashFX;
-import src.input.PlayerControls;
+import src.input.DashAction;
 import src.manage.Clock;
 import src.shapes.*;
 import src.util.Util;
@@ -14,9 +14,6 @@ public class PlayerSlash extends PlayerAttack {
 
     double[] facing;
 
-    /** position relative to player */
-    double[] gap;
-
     boolean doLunge;
     
     public PlayerSlash(double facingX, double facingY, boolean doLunge) {
@@ -26,8 +23,9 @@ public class PlayerSlash extends PlayerAttack {
         clockAffectedLevel = Clock.INCLUDING_PLAYER;
 
         facing = new double[] {facingX, facingY};
-        gap = new double[2];
         this.doLunge = doLunge;
+
+        endHook = () -> { Player.player.scytheAccessory.visible = true; };
     }
     public PlayerSlash() {
         this(-1, -1, false);
@@ -38,6 +36,8 @@ public class PlayerSlash extends PlayerAttack {
     @Override
     public void enable() {
 
+        Player.player.scytheAccessory.visible = false;
+
         PlayerSlash thisSlash = this;
 
         new Thread(new Runnable() {
@@ -46,8 +46,9 @@ public class PlayerSlash extends PlayerAttack {
                 
                 if (facing != null) {
                     faceTowards(facing[0], facing[1]);
-                    gap = getVectorTowards(facing[0], facing[1], 50);
 
+                    Player.player.setHeading(facing[0]);
+                    thisSlash.setHeading(facing[0]);
                     
                     if (doLunge && Util.dist(Player.player.x, Player.player.y, facing[0], facing[1]) > 140) {
                         // push player towards enemy and wait until finished
@@ -57,14 +58,10 @@ public class PlayerSlash extends PlayerAttack {
                     }
                 } else {
                     setRotation(0); // rotation always 0, heading and gap changes
-                    gap[0] = 50 * Player.player.getHeading();
+                    thisSlash.setHeading(Player.player.getHeading());
                 }
-                
-                thisSlash.setHeading(gap[0]);
-                Player.player.setHeading(gap[0]);
 
                 setPosition(Player.player.x, Player.player.y);
-                // transform(gap[0], gap[1]);
                 
 
                 addToAllEntities();
@@ -76,20 +73,9 @@ public class PlayerSlash extends PlayerAttack {
                     Player.player.unlockHeading();
                 }, "lock heading when slashing thread").start();
                 
-                Polygon rect = new Polygon(
-                    new double[] {x - 90, y + 70},
-                    new double[] {x - 90, y - 70},
-                    new double[] {x + 90, y - 70},
-                    new double[] {x + 90, y + 70}
-                );
-
-                double rot = thisSlash.getRotation();
-                if (thisSlash.getHeading() == -1) rot += Math.PI;
-                rect.rotate(x, y, rot);
-
-                hitboxes.add(rect);
+                
+                hitboxes.add(spriteBounds);
                 doPlayerAttackCollisions(thisSlash);
-                hitboxes.clear();
 
             }
         }, "player slash enable thread").start();
@@ -117,7 +103,7 @@ public class PlayerSlash extends PlayerAttack {
             enemy.slowDown(0.1, 300);
 
             // reset dash cd
-            PlayerControls.DashAction.timeOfLastDash = 0;
+            DashAction.timeOfLastDash = 0;
 
         }, "hitlag then knockback after slash thread").start();
         
@@ -126,7 +112,6 @@ public class PlayerSlash extends PlayerAttack {
     public void update(long deltaTime) {
         // since melee attack, shouldnt check for collisions every update
         setPosition(Player.player.x, Player.player.y);
-        transform( gap[0], gap[1]);
     }
 
     @Override

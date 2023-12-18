@@ -4,6 +4,7 @@ import java.util.HashSet;
 import src.draw.Canvas;
 import src.entities.accessory.Accessory;
 import src.entities.accessory.HornsAndTail;
+import src.entities.accessory.ScytheAccessory;
 import src.entities.attack.*;
 import src.input.*;
 import src.manage.Clock;
@@ -49,9 +50,7 @@ public class Player extends Being {
 
         hornsAndTail = new HornsAndTail();
         
-        // scytheAccessory = new Accessory("scythe.png", this, 0.1, true);
-        // scytheAccessory.setSize(4);
-        // scytheAccessory.rotate(Math.toRadians(225));
+        scytheAccessory = new ScytheAccessory();
 
         super.enable();
     }

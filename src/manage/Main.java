@@ -3,17 +3,10 @@ package src.manage;
 import src.world.RoomNode;
 
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 
-import javax.swing.KeyStroke;
-
-import src.draw.Canvas;
-import src.draw.Window;
+import src.draw.*;
 import src.entities.*;
-import src.entities.accessory.SlashFX;
-import src.entities.ui.FPS;
-import src.input.PlayerControls.DebugAction;
-import src.util.Util;
+import src.input.DebugAction;
 
 public class Main { // out of bounds seed 1702397158781
 
@@ -46,11 +39,10 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
     
         new DebugAction(KeyEvent.VK_6, () -> { 
-            new SwordAngel(Player.player.x, Player.player.x).enable();
+            System.out.println(Player.player.scytheAccessory.visible);
         });
 
-        // Clock.pauseState = 5;
-        // Clock.setSpeed(0.2);
+        Player.player.visible = true;
     }
 
 }
