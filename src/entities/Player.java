@@ -89,7 +89,6 @@ public class Player extends Being {
         EnemyAttack atk = (EnemyAttack) other;
 
         if (parryBodyActive) {
-            //TODO: tint screen on parry
 
             Canvas.screenshake(80, 2, 15);
             
@@ -109,6 +108,8 @@ public class Player extends Being {
             }
             
             new Entity("parry.gif", parryPos[0], parryPos[1], 10).enable();
+
+            CounterAction.enable(atk.caster);
         }
         else if (player.hurt(1)) {
             new Thread( () -> { 

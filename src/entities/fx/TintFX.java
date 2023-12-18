@@ -34,11 +34,14 @@ public class TintFX extends Entity {
             for (; opacity > 0; opacity = Math.max(0, opacity - 0.05f) ) 
                 Util.sleepTilInterrupt(Clock.adjustForClockSpeed(30));
             
-            disable();
+            super.disable();
         }, "fade out then disable tint thread");
         fadeThread.start();
 
     }
+
+    @Override
+    public void disable() { fadeThread.interrupt(); }
 
     @Override
     public void update(long deltaTime) {

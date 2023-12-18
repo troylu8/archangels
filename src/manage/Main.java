@@ -44,13 +44,6 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
         
-        new DebugAction(KeyEvent.VK_6, () -> { 
-            CounterAction.enable();
-        });
-
-        new DebugAction(KeyEvent.VK_7, () -> { 
-            CounterAction.disable();
-        });
 
         Player.player.visible = true;
     }

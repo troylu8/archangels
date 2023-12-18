@@ -7,8 +7,8 @@ import src.util.Util;
 
 public class AfterimageFX extends Entity {
     
-    /** one afterimage appears every (FREQUENCY) ms  */
-    static final int FREQUENCY = 16;
+    /** one afterimage appears every (DELAY_BETWEEN) ms  */
+    static final int DELAY_BETWEEN = 16;
 
     static private Thread afterImageMaker = new Thread();
 
@@ -20,14 +20,18 @@ public class AfterimageFX extends Entity {
         clockAffectedLevel = Clock.INCLUDING_PLAYER;
     }
 
+    public static Thread setActive() {
+        return setActiveFor(Integer.MAX_VALUE);
+    }
+
     public static Thread setActiveFor(int ms) {
         afterImageMaker.interrupt();
 
         afterImageMaker = new Thread(() -> {
             try {
-                for (int i = 0; i < ms; i += FREQUENCY) {
+                for (int i = 0; i < ms; i += DELAY_BETWEEN) {
                     new AfterimageFX(Player.player.x, Player.player.y).enable();
-                    Thread.sleep(FREQUENCY);
+                    Thread.sleep(DELAY_BETWEEN);
                 }
             } 
             catch (InterruptedException ie ) {}
@@ -36,7 +40,7 @@ public class AfterimageFX extends Entity {
         afterImageMaker.start();
         return afterImageMaker;
     }
-    static void stop() {
+    public static void stop() {
         afterImageMaker.interrupt();
     }
 

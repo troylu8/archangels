@@ -21,10 +21,10 @@ public class Entity {
     
     /**
      * <p> higher layers are painted on top
-     * <p> 4 - interact tag
-     * <p> 3 - obstacle
-     * <p> 2 - default
-     * <p> 1 - accessory
+     * <p> 5 - interact tag
+     * <p> 4 - attacks
+     * <p> 3 - default
+     * <p> 2 - obstacle
      * <p> 0 - gates
      * <p> -1 - tint
      */
@@ -64,7 +64,7 @@ public class Entity {
 
     /* if this entity is visible and included in groups */
     public boolean enabled = false;
-    private int drawLayer = 2;
+    private int drawLayer = 3;
 
     /** clock speed/pausing only takes effect if Clock.pauseState >= clockAffectedLevel  */
     public int clockAffectedLevel;

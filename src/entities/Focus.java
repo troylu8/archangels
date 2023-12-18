@@ -5,6 +5,9 @@ import src.manage.Clock;
 
 public class Focus extends Entity {
 
+    /** toggles refocusing to closest enemy every frame */
+    public static boolean updateFocus = true;
+
     final Enemy wearer;
 
     final Object focusLock = new Object(); 
@@ -56,6 +59,8 @@ public class Focus extends Entity {
     static Focus activeFocus;
 
     public static void updateFocusedEnemy() {
+        if (!updateFocus) return;
+
         Enemy prev = focusedEnemy;
 
         focusedEnemy = Enemy.closestEnemyInRange(PlayerSlash.RANGE);
