@@ -1,44 +1,27 @@
 package src.input;
+
 import java.awt.event.*;
 import java.util.*;
 
-import javax.swing.*;
-
-import src.draw.Canvas;
 import src.entities.Player;
 
 public class PlayerMovementControls {
-
-    private static boolean enabled = false;
     
     private static int[] keyCodes = { KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D };
 
     private static final Integer[][] DIRECTIONS = { {0, -1}, {0, 1}, {-1, 0}, {1, 0} };
 
     private static final String[] ACTION_CODES = { "up", "down", "left", "right" };
-
-
-    public static void enable() {
-        if (enabled) return;
-        enabled = true;
+    
+    static {
+        // create keybind managers
         for (int i = 0; i < 4; i++) 
-            setDirectionalKey(keyCodes[i], DIRECTIONS[i], ACTION_CODES[i]);
-        
+            new KeyBindManager(ACTION_CODES[i], keyCodes[i]);
     }
 
-    public static void disable() {
-        if (!enabled) return;
-        enabled = false;
-        ActionMap actionMap = Canvas.panel.getActionMap();
+    public static void addMovementControls(HashMap<String, KeyPressAction> controlsList) {
         for (int i = 0; i < 4; i++) 
-            actionMap.remove(ACTION_CODES[i]);
-    }
-
-    public static boolean isEnabled() { return enabled; }
-
-    public static void setDirectionalKey(int keyCode, Integer[] direction, String actionCode){
-        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, true), true, actionCode);
-        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, false), false, actionCode);
+            controlsList.put(ACTION_CODES[i], new MovementAction(DIRECTIONS[i]));
     }
 
     public static void stopMoving(){
@@ -54,7 +37,7 @@ public class PlayerMovementControls {
     /** player trajectory without accounting for diagonal length, used to determine if player trajectory needs diagonal shortening or not */ 
     public static int[] offset = new int[2]; 
 
-    static class OffsetManager extends AbstractAction {
+    static class OffsetManager {
 
         Integer[] direction;
         boolean addDirection;
@@ -64,8 +47,7 @@ public class PlayerMovementControls {
             this.addDirection = addDirection;
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e){
+        public void changeOffset() {
 
             boolean somethingChanged = false;
             
@@ -89,6 +71,24 @@ public class PlayerMovementControls {
                 Player.player.setHeading(Player.player.trajectory[0]);
             
         }
+    }
+
+    static class MovementAction extends KeyPressAction {
+
+        OffsetManager offsetManagerPress;
+        OffsetManager offsetManagerRelease;
+
+        public MovementAction(Integer[] direction) {
+            offsetManagerPress = new OffsetManager(direction, true);
+            offsetManagerRelease = new OffsetManager(direction, false);
+        }
+
+        @Override
+        public void onKeyPress() { offsetManagerPress.changeOffset(); }
+
+        @Override
+        public void onKeyRelease() { offsetManagerRelease.changeOffset(); }
+
     }
 
 }

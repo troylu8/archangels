@@ -2,11 +2,7 @@ package src.input;
 
 import src.entities.Player;
 
-public class InteractAction extends KeyPress {
-    
-    public InteractAction(int keyCode) {
-        super(keyCode);
-    }
+public class InteractAction extends KeyPressAction {
 
     @Override
     public void onKeyPress() {

@@ -4,9 +4,7 @@ import src.draw.Canvas;
 import src.entities.attack.PlayerStarStep;
 import src.manage.Clock;
 
-public class StarStepAction extends KeyPress {
-    
-    public StarStepAction(int keyCode) { super(keyCode); }
+public class StarStepAction extends KeyPressAction {
 
     @Override
     public void onKeyPress() {

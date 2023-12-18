@@ -17,8 +17,6 @@ public class Player extends Being {
 
     public static Interactable focusedInteractable;
 
-    PlayerControls playerControls;
-
     /** set of collidables that i am currently in collision with
      * different than collided bc these are only things im colliding with RIGHT NOW */
     public HashSet<Collidable> collidingWith = new HashSet<>();
@@ -35,8 +33,6 @@ public class Player extends Being {
         
         playerCircle = new Circle(x, y, 25);
         hitboxes.add(playerCircle);
-
-        playerControls = new PlayerControls(this);
         
         disableOnRoomChange = false;
 

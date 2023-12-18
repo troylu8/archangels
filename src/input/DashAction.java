@@ -7,7 +7,7 @@ import src.entities.fx.*;
 import src.manage.Clock;
 import src.util.Util;
 
-public class DashAction extends KeyPress {
+public class DashAction extends KeyPressAction {
 
     public static final int DISTORTION_TIME = 2500;
 
@@ -17,8 +17,6 @@ public class DashAction extends KeyPress {
 
     public static final int COOLDOWN = 500;
     public static long timeOfLastDash = 0;
-
-    public DashAction(int keyCode) { super(keyCode); }
 
     @Override
     public void onKeyPress() {

@@ -1,26 +1,16 @@
 package src.input;
 
-import javax.swing.*;
 
-import src.draw.Canvas;
-
-public class DebugAction extends KeyPress {
+public class DebugAction extends KeyPressAction {
 
     Runnable onKeyPress;
     Runnable onKeyRelease;
 
     public DebugAction(int keyCode, Runnable onKeyPress, Runnable onKeyRelease) { 
-        super(keyCode); 
         this.onKeyPress = onKeyPress;
         this.onKeyRelease = onKeyRelease;
 
-        this.addToControls(PlayerControls.constantControls, "debug" + keyCode);
-
-        InputMap inputMap = Canvas.panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        
-        for (KeyStroke key : PlayerControls.constantControls.keySet())
-            inputMap.put(key, PlayerControls.constantControls.get(key));
-
+        new KeyBindManager("debug " + keyCode, keyCode).setKeyPressAction(this);
     }
     public DebugAction(int keyCode, Runnable onKeyPress) { 
         this(keyCode, onKeyPress, null);

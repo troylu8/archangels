@@ -5,34 +5,44 @@ import javax.swing.ActionMap;
 import src.draw.Canvas;
 import src.entities.*;
 
-public class CounterAction extends KeyPress {
+public class CounterAction extends KeyPressAction {
 
-    static CounterAction counterAction;
+    private static boolean enabled = false;
 
     private static Enemy target = null;
 
-    private CounterAction(int keyCode) { super(keyCode); counterAction = this; }
+    public static void enable() {
+        if (enabled) return;
+        enabled = true;
 
-    public static void enable(Enemy target) {
+        System.out.println("enabled");
 
-        ActionMap actionMap = Canvas.panel.getActionMap();
-        counterAction.addToControls(null, null);
-        
+        KeyBindManager.allKeyBindManagers.get("slash").setKeyPressAction(new CounterAction());
 
         CounterAction.target = target;
+
         // disable focus changing
         Focus.setFocus(target);
 
     }
 
+    public static void disable() {
+        if (!enabled) return;
+        enabled = false;
+
+        KeyBindManager.allKeyBindManagers.get("slash").setKeyPressAction(new SlashAction());
+    }
+
+    public static boolean isEnabled() { return enabled; }
     @Override
     public void onKeyPress() {
-        Player p = Player.player;
+        System.out.println("counter");
+        // Player p = Player.player;
 
-        p.disableMovement();
-        p.setTrajectoryFor(target.x, target.y);
-        p.speedMultiplier *= 5;
-        // stop when there
+        // p.disableMovement();
+        // p.setTrajectoryFor(target.x, target.y);
+        // p.speedMultiplier *= 5;
+        // // stop when there
     }
 
     @Override

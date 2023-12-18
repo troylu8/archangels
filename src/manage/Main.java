@@ -6,7 +6,10 @@ import java.awt.event.KeyEvent;
 
 import src.draw.*;
 import src.entities.*;
+import src.input.CounterAction;
 import src.input.DebugAction;
+import src.input.KeyBindManager;
+import src.input.PlayerControls;
 import src.input.PlayerMovementControls;
 
 public class Main { // out of bounds seed 1702397158781
@@ -21,6 +24,8 @@ public class Main { // out of bounds seed 1702397158781
         
         Player.player = new Player(1500, 1500);        
         Player.player.enable();
+
+        PlayerControls.init();
 
         RoomNode.generateWorld(System.currentTimeMillis());
         
@@ -38,12 +43,13 @@ public class Main { // out of bounds seed 1702397158781
 
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
-    
+        
         new DebugAction(KeyEvent.VK_6, () -> { 
-            if (PlayerMovementControls.isEnabled()) 
-                PlayerMovementControls.disable();
-            else PlayerMovementControls.enable();
-            System.out.println(PlayerMovementControls.isEnabled());
+            CounterAction.enable();
+        });
+
+        new DebugAction(KeyEvent.VK_7, () -> { 
+            CounterAction.disable();
         });
 
         Player.player.visible = true;

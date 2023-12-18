@@ -5,12 +5,10 @@ import src.entities.attack.*;
 import src.shapes.HitboxList;
 import src.util.Util;
 
-public class SlashAction extends KeyPress {
+public class SlashAction extends KeyPressAction {
     
     private static long timeOfLastSlash;
     final int COOLDOWN = 400;
-
-    public SlashAction(int keyCode) { super(keyCode); }
 
     @Override
     public void onKeyPress() {

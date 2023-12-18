@@ -2,10 +2,7 @@ package src.input;
 
 import src.entities.ui.Map;
 
-public class MapAction extends KeyPress {
-
-    public MapAction(int keyCode) { super(keyCode); }
-
+public class MapAction extends KeyPressAction {
     @Override
     public void onKeyPress() { Map.map.enable(); }
 
