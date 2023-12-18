@@ -32,10 +32,9 @@ public class PlayerSlash extends PlayerAttack {
         facing = null;
     }
     
-//aaa
     @Override
     public void enable() {
-        
+
         Player.player.scytheAccessory.visible = false;
 
         PlayerSlash thisSlash = this;
