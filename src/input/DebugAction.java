@@ -14,7 +14,7 @@ public class DebugAction extends KeyPress {
         this.onKeyPress = onKeyPress;
         this.onKeyRelease = onKeyRelease;
 
-        this.addToControls(PlayerControls.constantControls);
+        this.addToControls(PlayerControls.constantControls, "debug" + keyCode);
 
         InputMap inputMap = Canvas.panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         

@@ -12,6 +12,8 @@ public abstract class Attack extends MovingBody implements Collidable {
 
     public final int DMG;
 
+    
+
     public Attack(String spriteFilename, double x, double y, int dmg, double speed) {
         super("attacks\\" + spriteFilename, x, y, speed);
         this.DMG = dmg;
@@ -43,6 +45,6 @@ public abstract class Attack extends MovingBody implements Collidable {
         b2.enableMovement();
     }
     public void doHitlag(Being b1, Being b2) {
-        doHitlag(b1, b2, 80);
+        doHitlag(b1, b2, 100);
     }
 }

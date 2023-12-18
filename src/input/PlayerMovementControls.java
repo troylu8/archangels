@@ -9,50 +9,52 @@ import src.entities.Player;
 
 public class PlayerMovementControls {
 
-    JPanel panel;
-    Player player;
- 
-    public static int upKeyCode = KeyEvent.VK_W;
-    public static int downKeyCode = KeyEvent.VK_S;
-    public static int leftKeyCode = KeyEvent.VK_A;
-    public static int rightKeyCode = KeyEvent.VK_D;
+    private static boolean enabled = false;
+    
+    private static int[] keyCodes = { KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D };
 
-    private static final Integer[] UP = {0, -1};
-    private static final Integer[] DOWN = {0, 1};
-    private static final Integer[] LEFT = {-1, 0};
-    private static final Integer[] RIGHT = {1, 0};
+    private static final Integer[][] DIRECTIONS = { {0, -1}, {0, 1}, {-1, 0}, {1, 0} };
 
-    public PlayerMovementControls(Player player){
-        panel = Canvas.panel;
+    private static final String[] ACTION_CODES = { "up", "down", "left", "right" };
 
-        this.player = player;
 
-        setDirectionalKey(upKeyCode, UP);
-        setDirectionalKey(downKeyCode, DOWN);
-        setDirectionalKey(leftKeyCode, LEFT);
-        setDirectionalKey(rightKeyCode, RIGHT);
+    public static void enable() {
+        if (enabled) return;
+        enabled = true;
+        for (int i = 0; i < 4; i++) 
+            setDirectionalKey(keyCodes[i], DIRECTIONS[i], ACTION_CODES[i]);
         
     }
 
-    public void setDirectionalKey(int keyCode, Integer[] direction){
-        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, true), true);
-        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, false), false);
+    public static void disable() {
+        if (!enabled) return;
+        enabled = false;
+        ActionMap actionMap = Canvas.panel.getActionMap();
+        for (int i = 0; i < 4; i++) 
+            actionMap.remove(ACTION_CODES[i]);
     }
 
-    public void stopMoving(){
+    public static boolean isEnabled() { return enabled; }
+
+    public static void setDirectionalKey(int keyCode, Integer[] direction, String actionCode){
+        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, true), true, actionCode);
+        PlayerControls.addKeybind(PlayerControls.defaultControls, keyCode, new OffsetManager(direction, false), false, actionCode);
+    }
+
+    public static void stopMoving(){
         directions.clear();
-        player.trajectory[0] = 0;
-        player.trajectory[1] = 0;
+        Player.player.trajectory[0] = 0;
+        Player.player.trajectory[1] = 0;
         offset[0] = 0;
         offset[1] = 0;
     }
 
-    static Set<Integer[]> directions = new HashSet<>();
+    private static Set<Integer[]> directions = new HashSet<>();
     
     /** player trajectory without accounting for diagonal length, used to determine if player trajectory needs diagonal shortening or not */ 
     public static int[] offset = new int[2]; 
 
-    class OffsetManager extends AbstractAction {
+    static class OffsetManager extends AbstractAction {
 
         Integer[] direction;
         boolean addDirection;
@@ -75,16 +77,16 @@ public class PlayerMovementControls {
             offset[0] += direction[0] * (addDirection ? 1 : -1);
             offset[1] += direction[1] * (addDirection ? 1 : -1);
 
-            player.trajectory[0] = offset[0];
-            player.trajectory[1] = offset[1];
+            Player.player.trajectory[0] = offset[0];
+            Player.player.trajectory[1] = offset[1];
 
             if (offset[0] != 0 && offset[1] != 0) {
-                player.trajectory[0] *= 0.707;
-                player.trajectory[1] *= 0.707;
+                Player.player.trajectory[0] *= 0.707;
+                Player.player.trajectory[1] *= 0.707;
             }
             
-            if (player.trajectory[0] != 0) 
-                player.setHeading(player.trajectory[0]);
+            if (Player.player.trajectory[0] != 0) 
+                Player.player.setHeading(Player.player.trajectory[0]);
             
         }
     }

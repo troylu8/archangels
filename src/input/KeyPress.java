@@ -20,12 +20,12 @@ public abstract class KeyPress {
         keyPressed = false;
     }
 
-    public void addToControls(HashMap<KeyStroke, String> controls) {
+    public void addToControls(HashMap<KeyStroke, String> controls, String actionCode) {
         
         ActionMap actionMap = Canvas.panel.getActionMap();
 
-        controls.put(KeyStroke.getKeyStroke(keyCode, 0, false), "" + keyCode);
-        actionMap.put("" + keyCode, new AbstractAction() {
+        controls.put(KeyStroke.getKeyStroke(keyCode, 0, false), actionCode);
+        actionMap.put(actionCode, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (keyPressed) return;
@@ -35,8 +35,8 @@ public abstract class KeyPress {
             }
         } );
 
-        controls.put(KeyStroke.getKeyStroke(keyCode, 0, true), keyCode + " released");
-        actionMap.put(keyCode + " released", new AbstractAction() {
+        controls.put(KeyStroke.getKeyStroke(keyCode, 0, true), actionCode + " released");
+        actionMap.put(actionCode + " released", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!keyPressed) return;

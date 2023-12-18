@@ -11,13 +11,13 @@ public abstract class EnemyAttack extends Attack {
     /** if dash inside a premonition, trigger mirage */
     public static Group<HitboxList> allPremonitions = new Group<>();
 
-    public Enemy caster;
-
     final int attackStartFrame;
     final int attackEndFrame;
     int timeBeforeAttackFrame;
     /** true when between attack start and end frames */
     boolean active;
+
+    public Enemy caster;
 
     /** attackFrame = when spark should disappear, 0-indexed */
     public EnemyAttack(String spriteFilename, Enemy caster, double x, double y, int dmg, double speed, int attackStartFrame, int attackEndFrame) {
@@ -136,7 +136,8 @@ public abstract class EnemyAttack extends Attack {
         visible = true;
         if (animation != null)  animation.play();
         else                    active = true;
-    }    
+    }
+
 }
 
 

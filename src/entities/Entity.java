@@ -308,7 +308,7 @@ public class Entity {
         
         // draw sprite bounds
         if (Main.drawSpriteBounds) {               
-            g.setColor(Color.ORANGE);
+            g.setColor(Color.BLUE);
             g.fillOval(posOnCamera[0] - 5, posOnCamera[1] - 5, 10, 10);
                   
             g.setColor((this instanceof UI)? Color.GREEN : Color.RED);

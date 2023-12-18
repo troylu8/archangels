@@ -3,6 +3,7 @@ package src.entities.attack;
 import java.util.HashSet;
 
 import src.entities.Enemy;
+import src.entities.Player;
 import src.shapes.Circle;
 import src.shapes.Collidable;
 

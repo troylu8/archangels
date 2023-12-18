@@ -89,7 +89,7 @@ public abstract class Projectile extends EnemyAttack {
     public Thread sparkAndAttack() {
         Thread saa = new Thread( new Runnable() {
             public void run() {                
-                new Spark(caster).enable();
+                new Spark( caster).enable();
                 Util.sleepTilInterrupt(Clock.adjustForClockSpeed(Spark.ANIMATION_TIME));
                 addToAllEntities();
                 enable();

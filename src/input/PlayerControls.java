@@ -11,29 +11,22 @@ public class PlayerControls {
     
     /** always active regardless of current activeControls*/
     public static HashMap<KeyStroke, String> constantControls = new HashMap<>();
-
     public static HashMap<KeyStroke, String> defaultControls = new HashMap<>();
 
     public static HashMap<KeyStroke, String> activeControls;
 
-    Player player;
-
-    public static PlayerMovementControls playerMovementControls;
-
     public PlayerControls(Player player){
 
-        this.player = player;
+        PlayerMovementControls.enable();
 
-        playerMovementControls = new PlayerMovementControls(player);
+        new DashAction(KeyEvent.VK_K).addToControls(defaultControls, "dash");
+        new SlashAction(KeyEvent.VK_J).addToControls(defaultControls, "slash");
+        new StarStepAction(KeyEvent.VK_I).addToControls(defaultControls, "starstep");
 
-        new DashAction(KeyEvent.VK_K).addToControls(defaultControls);
-        new SlashAction(KeyEvent.VK_J).addToControls(defaultControls);
-        new StarStepAction(KeyEvent.VK_I).addToControls(defaultControls);
+        new InteractAction(KeyEvent.VK_E).addToControls(defaultControls, "interact");
 
-        new InteractAction(KeyEvent.VK_E).addToControls(defaultControls);
-
-        new MapAction(KeyEvent.VK_TAB).addToControls(defaultControls);
-        new MapAction(KeyEvent.VK_T).addToControls(defaultControls);
+        new MapAction(KeyEvent.VK_TAB).addToControls(defaultControls, "map");
+        new MapAction(KeyEvent.VK_T).addToControls(defaultControls, "map");
 
 
         setActiveControls(defaultControls);
@@ -42,15 +35,14 @@ public class PlayerControls {
     /** disables all but constantControls */
     public static void disableControls() { setActiveControls(new HashMap<>()); }
 
-    public static void addKeybind(HashMap<KeyStroke, String> controlsList, int keyCode, Action action, boolean onKeyPress){
+    public static void addKeybind(HashMap<KeyStroke, String> controlsList, int keyCode, Action action, boolean onKeyPress, String actionCode){
         KeyStroke keystroke = KeyStroke.getKeyStroke(keyCode, 0, !onKeyPress);
-        String actionMapKey = String.valueOf(keyCode);
-        if (!onKeyPress) actionMapKey += " released";
+        if (!onKeyPress) actionCode += " released";
 
         ActionMap actionMap = Canvas.panel.getActionMap();
 
-        controlsList.put(keystroke, actionMapKey);
-        actionMap.put(actionMapKey, action);
+        controlsList.put(keystroke, actionCode);
+        actionMap.put(actionCode, action);
     }
 
     /** adjust inputmap */
@@ -58,7 +50,7 @@ public class PlayerControls {
         
         // if switching away from default controls, stop the player's movement
         if (activeControls != null && defaultControls != null && activeControls.equals(defaultControls))
-            playerMovementControls.stopMoving();
+            PlayerMovementControls.stopMoving();
         
         InputMap inputMap = Canvas.panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 

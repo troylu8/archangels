@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JFrame;
 
-import src.input.PlayerControls;
+import src.input.PlayerMovementControls;
 
 public class Window extends JFrame {
 
@@ -51,6 +51,6 @@ class StopAfterFocusLost implements WindowFocusListener {
 
     @Override
     public void windowLostFocus(WindowEvent e) {
-        PlayerControls.playerMovementControls.stopMoving();
+        PlayerMovementControls.stopMoving();
     }
 }

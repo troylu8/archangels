@@ -46,8 +46,8 @@ public class PlayerSlash extends PlayerAttack {
                 if (facing != null) {
                     faceTowards(facing[0], facing[1]);
 
-                    Player.player.setHeading(facing[0]);
-                    thisSlash.setHeading(facing[0]);
+                    Player.player.setHeading(facing[0] - Player.player.x);
+                    thisSlash.setHeading(facing[0] - Player.player.x);
                     
                     if (doLunge && Util.dist(Player.player.x, Player.player.y, facing[0], facing[1]) > 140) {
                         // push player towards enemy and wait until finished

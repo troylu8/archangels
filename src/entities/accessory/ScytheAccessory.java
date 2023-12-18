@@ -6,7 +6,6 @@ public class ScytheAccessory extends Accessory {
 
     public ScytheAccessory() {
         super("scythe.png", Player.player, 0.1, true);
-        
         setSize(3);
     }
 

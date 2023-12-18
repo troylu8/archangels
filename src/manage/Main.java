@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import src.draw.*;
 import src.entities.*;
 import src.input.DebugAction;
+import src.input.PlayerMovementControls;
 
 public class Main { // out of bounds seed 1702397158781
 
@@ -39,7 +40,10 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
     
         new DebugAction(KeyEvent.VK_6, () -> { 
-            System.out.println(Player.player.scytheAccessory.visible);
+            if (PlayerMovementControls.isEnabled()) 
+                PlayerMovementControls.disable();
+            else PlayerMovementControls.enable();
+            System.out.println(PlayerMovementControls.isEnabled());
         });
 
         Player.player.visible = true;

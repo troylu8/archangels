@@ -114,8 +114,15 @@ public class Player extends Being {
             
             new Entity("parry.gif", parryPos[0], parryPos[1], 10).enable();
         }
-        else if (player.hurt(1)) 
-            push(x + (x - atk.x), y + (y - atk.y), atk.getKnockback());
+        else if (player.hurt(1)) {
+            new Thread( () -> { 
+                
+                atk.doHitlag(atk.caster, Player.player); 
+                push(x + (x - atk.x), y + (y - atk.y), atk.getKnockback());
+
+            }, "enemy atk hitlag then push thread").start();
+        }
+            
     }
 
     @Override
