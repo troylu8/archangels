@@ -11,7 +11,10 @@ public class StarStepAction extends KeyPressAction {
         // if clock paused, star step is free but unpauses clock
         if (Clock.isPaused()) {
             new PlayerStarStep().enable();
+            
             Clock.unpause();
+            if (DashAction.tint != null) DashAction.tint.disable();
+
             Canvas.setFOVsizeByWidth(1200);
         }
         else {

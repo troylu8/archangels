@@ -21,7 +21,7 @@ public class SlashFX extends Accessory {
             });
         }
         else slash = new SlashFX("red slash no startup.gif", following, size, rotation);
-                
+        
         slash.enable();
         return slash;
     }

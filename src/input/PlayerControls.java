@@ -10,7 +10,6 @@ public class PlayerControls {
     public static HashMap<String, KeyPressAction> defaultControls = new HashMap<>();
 
     public static void init() {
-        System.out.println("a");
 
         new KeyBindManager("dash", KeyEvent.VK_K);
         new KeyBindManager("slash", KeyEvent.VK_J);

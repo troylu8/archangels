@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 
 import src.draw.*;
 import src.entities.*;
+import src.entities.attack.PlayerSlash;
+import src.entities.fx.TintFX;
 import src.input.CounterAction;
 import src.input.DebugAction;
 import src.input.KeyBindManager;
@@ -43,8 +45,12 @@ public class Main { // out of bounds seed 1702397158781
 
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
-        
 
+        new DebugAction(KeyEvent.VK_6, () -> {  });
+        
+        SwordAngel sa = new SwordAngel(Player.player.x, Player.player.y);
+        sa.enable();
+        CounterAction.enable(sa);
         Player.player.visible = true;
     }
 

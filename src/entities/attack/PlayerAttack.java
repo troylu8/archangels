@@ -26,7 +26,7 @@ public abstract class PlayerAttack extends Attack {
     }
 
     public static void doPlayerAttackCollisions(PlayerAttack attack) {
-
+        System.out.println("starting atk collisions");
         Enemy.allEnemies.forEachSynced( (Enemy enemy) -> {
             if (attack.hitboxes.collidesWithCircle((Circle) enemy.hitboxes.get(0))) {
                 if (attack.collided.add(enemy)) {
@@ -35,6 +35,8 @@ public abstract class PlayerAttack extends Attack {
                 }
             }
         });
+        
+        System.out.println("finished atk collisions");
 
     }
     

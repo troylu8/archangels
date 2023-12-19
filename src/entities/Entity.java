@@ -24,7 +24,8 @@ public class Entity {
      * <p> 5 - interact tag
      * <p> 4 - attacks
      * <p> 3 - default
-     * <p> 2 - obstacle
+     * <p> 2 - accessory
+     * <p> 1 - obstacle
      * <p> 0 - gates
      * <p> -1 - tint
      */

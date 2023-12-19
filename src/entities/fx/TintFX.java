@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import src.draw.Canvas;
 import src.entities.Entity;
 import src.entities.Player;
 import src.manage.Clock;
@@ -47,8 +48,6 @@ public class TintFX extends Entity {
     public void update(long deltaTime) {
         setPosition(Player.player.x, Player.player.y);
         setSize(getSize() + 5 * deltaTime);
-        if (!Clock.isPaused()) 
-            fadeThread.interrupt();
     }
 
     @Override

@@ -89,6 +89,7 @@ public class Player extends Being {
         EnemyAttack atk = (EnemyAttack) other;
 
         if (parryBodyActive) {
+            System.out.println("parried");
 
             Canvas.screenshake(80, 2, 15);
             

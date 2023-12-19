@@ -8,12 +8,14 @@ import src.entities.accessory.SlashFX;
 import src.entities.attack.PlayerSlash;
 import src.entities.fx.AfterimageFX;
 import src.entities.fx.TintFX;
+import src.manage.Clock;
 import src.shapes.Collidable;
 import src.util.Util;
 
 public class CounterAction extends KeyPressAction {
 
-    public static final int DURATION = 5000;
+    public static final int DURATION = 1000;
+    private static Thread disableAfter = new Thread();
 
     private static boolean enabled = false;
 
@@ -35,11 +37,29 @@ public class CounterAction extends KeyPressAction {
         tint = new TintFX(DURATION);
         tint.enable();
 
+        Clock.setSpeed(0.3);
+        AfterimageFX.setActive();
+        
+        disableAfter = new Thread(() -> {
+            try {
+                Thread.sleep(DURATION);
+                System.out.println("time disable");
+                disable();
+            } 
+            catch (InterruptedException e) { System.out.println("interrupt");}
+        }, "disable counterAction after time thread");
+        disableAfter.start();
+
+        System.out.println("enabled");
     }
 
     public static void disable() {
         if (!enabled) return;
         enabled = false;
+        System.out.println("disabled");
+
+        Clock.setSpeed(1);
+        AfterimageFX.stop();
 
         tint.disable();
 
@@ -47,35 +67,35 @@ public class CounterAction extends KeyPressAction {
     }
 
     public static boolean isEnabled() { return enabled; }
+
     @Override
     public void onKeyPress() {
         System.out.println("counter");
 
-        AfterimageFX.setActive();
+        // disableAfter.interrupt();
 
         Player p = Player.player;
-
-        p.disableMovement();
         
         /** pos relative to enemy */
-        double[] gap = p.getVectorTowards(target.x, target.y, 90);
+        double[] gap = p.getVectorTowards(target.x, target.y, 110);
         p.setPosition(target.x + gap[0], target.y + gap[1]);
 
         new Thread(() -> {
-            Util.sleepTilInterrupt(1000);
+            Clock.pause(Clock.INCLUDING_PLAYER);
+            Util.sleepTilInterrupt(300);
+            Clock.unpause();
 
             new PlayerSlash(target.x, target.y, false) {
                 @Override 
                 public void onCollideEnter(Collidable other) {
                     double dir = Util.directionToTheta(target.x - p.x, target.y - p.y);
-                    SlashFX.createSlash(target, 4, dir, true);
-                    SlashFX.createSlash(target, 4, dir + Math.toRadians(30), true);
-                    SlashFX.createSlash(target, 4, dir - Math.toRadians(30), true);
+                    new Thread( () -> {
+                        SlashFX.createSlash(target, 6, dir, true);
+                        SlashFX.createSlash(target, 4, dir + Math.toRadians(Util.rand(15, 30)) *  ((Math.random() > 0.5)? 1 : -1)  , true);
+                    } ).start();
                 }
             }.enable();
 
-            AfterimageFX.stop();
-            p.enableMovement();
             disable();
         }, "counter pause then slash thread").start();
         

@@ -17,7 +17,7 @@ public class Accessory extends Entity {
 
         wearer.accessories.queueToAdd(this);
 
-        setDrawLayer(wearer.getDrawLayer());
+        setDrawLayer(2);
         if (headingLinked)
             setHeading(wearer.getHeading());
     }

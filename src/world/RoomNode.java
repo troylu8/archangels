@@ -213,7 +213,7 @@ public class RoomNode {
 
     public void addEnemies() {
 
-        int enemyPoints = 1; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
+        int enemyPoints = 0; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
 
         int ceil = region.sortedCosts.length-1;
 

@@ -18,6 +18,8 @@ public class DashAction extends KeyPressAction {
     public static final int COOLDOWN = 500;
     public static long timeOfLastDash = 0;
 
+    public static TintFX tint;
+
     @Override
     public void onKeyPress() {
         if (System.currentTimeMillis() - timeOfLastDash < COOLDOWN) return;
@@ -42,8 +44,12 @@ public class DashAction extends KeyPressAction {
 
                     Clock.pause(Clock.NON_PLAYER_ENTITIES);
                     Canvas.setFOVsizeByWidth(1500);
-                    new TintFX(DISTORTION_TIME).enable();
+
+                    tint = new TintFX(DISTORTION_TIME);
+                    tint.enable();
+
                     Util.sleepTilInterrupt(DISTORTION_TIME);
+                    
                     Canvas.setFOVsizeByWidth(1200);
                     Clock.unpause();
 

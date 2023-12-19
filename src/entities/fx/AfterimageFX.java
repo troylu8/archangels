@@ -31,7 +31,7 @@ public class AfterimageFX extends Entity {
             try {
                 for (int i = 0; i < ms; i += DELAY_BETWEEN) {
                     new AfterimageFX(Player.player.x, Player.player.y).enable();
-                    Thread.sleep(DELAY_BETWEEN);
+                    Thread.sleep(Clock.adjustForClockSpeed(DELAY_BETWEEN));
                 }
             } 
             catch (InterruptedException ie ) {}

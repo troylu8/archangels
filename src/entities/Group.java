@@ -34,19 +34,18 @@ public class Group<Type> implements Iterable<Type> {
 
     /** empties factory and trash */
     private void update() {
-        synchronized (factory) {
-            synchronized (this) {
+        synchronized (this) {
+            synchronized (factory) {
                 set.addAll(factory);
+                factory.clear();
             }
-            factory.clear();
-        }
 
-        synchronized (trash) {
-            synchronized (this) {
+            synchronized (trash) {
                 set.removeAll(trash);
+                trash.clear();
             }
-            trash.clear();
         }
+        
         
     }
 

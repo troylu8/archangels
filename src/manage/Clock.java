@@ -111,8 +111,10 @@ public class Clock {
                     Interactable.updateFocusedInteractable();
                     Focus.updateFocusedEnemy();
                     
+                    System.out.println("starting update all");
                     Group.updateAll();
                     Entity.clearEmptyEntityLayers();
+                    System.out.println("finished update all");
 
                     Canvas.panel.repaint();
 

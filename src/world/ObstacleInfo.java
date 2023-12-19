@@ -35,7 +35,7 @@ public class ObstacleInfo {
         (LandTiles.getTrueVal(tileX) + LandTiles.getTrueVal(tileX + tileHitboxSize[0])) / 2,
         LandTiles.getTrueVal(tileY + 1), 
         0.5, 1, 4);
-        obstacle.setDrawLayer(2);
+        obstacle.setDrawLayer(1);
         obstacle.enable();
     }
 }

@@ -54,7 +54,7 @@ public class Util {
 
     public static void sleepTilInterrupt(int ms) {
         try { Thread.sleep(ms); } 
-        catch (InterruptedException e) {}
+        catch (InterruptedException e) { }
     }
 
     public static int clamp(int val, int lo, int hi) {

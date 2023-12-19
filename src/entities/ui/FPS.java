@@ -13,7 +13,7 @@ public class FPS extends TextUI {
         super("none", 1, 1, 1, -20, -20);
         setAnchor(1, 1);
         
-        display = new Text("a", 0, 0, 20, Text.RIGHT_ALIGNMENT, Color.BLUE);
+        display = new Text("- fps", 0, 0, 20, Text.RIGHT_ALIGNMENT, Color.BLUE);
         addText(display);
     }
 
