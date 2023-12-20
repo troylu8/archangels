@@ -19,17 +19,16 @@ public class Entity {
 
     public static Group<Entity> allEntities = new Group<>();
     
-    /**
-     * <p> higher layers are painted on top
-     * <p> 5 - interact tag
-     * <p> 4 - attacks
-     * <p> 3 - default
-     * <p> 2 - accessory
-     * <p> 1 - obstacle
-     * <p> 0 - gates
-     * <p> -1 - tint
-     */
+    /** higher layers are painted on top */
     public static HashMap<Integer, Group<Entity>> entityLayers = new HashMap<>();
+    public static final int INTERACT_TAG_LAYER = 7;
+    public static final int ATTACK_LAYER = 6;
+    public static final int DEFAULT_LAYER = 5;
+    public static final int ACCESSORY_LAYER = 4;
+    public static final int OBSTACLE_LAYER = 3;
+    public static final int GATE_LAYER = 2;
+    public static final int TINT_LAYER = 1;
+
 
     public String spriteFilename;
 
@@ -65,7 +64,7 @@ public class Entity {
 
     /* if this entity is visible and included in groups */
     public boolean enabled = false;
-    private int drawLayer = 3;
+    private int drawLayer = DEFAULT_LAYER;
 
     /** clock speed/pausing only takes effect if Clock.pauseState >= clockAffectedLevel  */
     public int clockAffectedLevel;

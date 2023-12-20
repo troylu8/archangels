@@ -18,7 +18,7 @@ public abstract class Attack extends MovingBody implements Collidable {
         super("attacks\\" + spriteFilename, x, y, speed);
         this.DMG = dmg;
         hitboxes = new HitboxList(this);
-        setDrawLayer(4);
+        setDrawLayer(ATTACK_LAYER);
     }
 
     @Override

@@ -10,7 +10,7 @@ public class InteractTag extends Entity {
 
     private InteractTag(String spriteFilename) {
         super(spriteFilename, -1, -1);
-        setDrawLayer(5);
+        setDrawLayer(INTERACT_TAG_LAYER);
     }
 
     public static void moveTagTo(Interactable interactable) {
