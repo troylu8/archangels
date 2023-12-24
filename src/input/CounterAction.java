@@ -43,20 +43,20 @@ public class CounterAction extends KeyPressAction {
         disableAfter = new Thread(() -> {
             try {
                 Thread.sleep(DURATION);
-                System.out.println("time disable");
+                // System.out.println("time disable"); sync
                 disable();
             } 
             catch (InterruptedException e) { System.out.println("interrupt");}
         }, "disable counterAction after time thread");
         disableAfter.start();
 
-        System.out.println("enabled");
+        // System.out.println("enabled"); sync
     }
 
     public static void disable() {
         if (!enabled) return;
         enabled = false;
-        System.out.println("disabled");
+        // System.out.println("disabled"); sync
 
         Clock.setSpeed(1);
         AfterimageFX.stop();
@@ -70,9 +70,9 @@ public class CounterAction extends KeyPressAction {
 
     @Override
     public void onKeyPress() {
-        System.out.println("counter");
+        // System.out.println("counter"); sync
 
-        // disableAfter.interrupt();
+        disableAfter.interrupt();
 
         Player p = Player.player;
         
@@ -85,16 +85,16 @@ public class CounterAction extends KeyPressAction {
             Util.sleepTilInterrupt(300);
             Clock.unpause();
 
-            new PlayerSlash(target.x, target.y, false) {
-                @Override 
-                public void onCollideEnter(Collidable other) {
-                    double dir = Util.directionToTheta(target.x - p.x, target.y - p.y);
-                    new Thread( () -> {
-                        SlashFX.createSlash(target, 6, dir, true);
-                        SlashFX.createSlash(target, 4, dir + Math.toRadians(Util.rand(15, 30)) *  ((Math.random() > 0.5)? 1 : -1)  , true);
-                    } ).start();
-                }
-            }.enable();
+            new PlayerSlash(target.x, target.y, false).enable();
+            //     @Override 
+            //     public void onCollideEnter(Collidable other) {
+            //         double dir = Util.directionToTheta(target.x - p.x, target.y - p.y);
+            //         new Thread( () -> {
+            //             SlashFX.createSlash(target, 6, dir, true);
+            //             SlashFX.createSlash(target, 4, dir + Math.toRadians(Util.rand(15, 30)) *  ((Math.random() > 0.5)? 1 : -1)  , true);
+            //         } ).start();
+            //     }
+            // }.enable();
 
             disable();
         }, "counter pause then slash thread").start();

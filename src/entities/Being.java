@@ -7,7 +7,7 @@ import src.shapes.HitboxList;
 
 public abstract class Being extends MovingBody implements Collidable {
 
-    public Group<Accessory> accessories = new Group<>();
+    public Group<Accessory> accessories = new Group<>("accessories for " + this);
 
     public HitboxList hitboxes;
 
@@ -42,7 +42,6 @@ public abstract class Being extends MovingBody implements Collidable {
     public void enable() {
         super.enable();
 
-        Group.updateAll();
         accessories.forEachSynced((Accessory a) -> { 
             a.enable(); 
         });

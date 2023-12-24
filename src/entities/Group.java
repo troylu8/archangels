@@ -5,7 +5,8 @@ import java.util.function.Consumer;
 
 public class Group<Type> implements Iterable<Type> {
 
-    private static ArrayList<Group> allGroups = new ArrayList<>();
+    //TODO: private
+    public static ArrayList<Group> allGroups = new ArrayList<>();
     
     public HashSet<Type> set;
     
@@ -13,12 +14,21 @@ public class Group<Type> implements Iterable<Type> {
     public HashSet<Type> factory;
     public HashSet<Type> trash;
 
-    public Group() {
+    public String name;
+
+    public Group(String name) {
+        this.name = name; 
+
         set = new HashSet<>();
         factory = new HashSet<>();
         trash = new HashSet<>();
         
         synchronized (allGroups) { allGroups.add(this); }
+    }
+
+    public void disable() {
+        synchronized (allGroups) { allGroups.remove(this); }
+        // System.out.println("disabled - " + allGroups.contains(this)); sync
     }
 
     public void queueToAdd(Type item) {
@@ -46,12 +56,14 @@ public class Group<Type> implements Iterable<Type> {
             }
         }
         
-        
     }
 
     public static void updateAll() {
         synchronized (allGroups) {
-            allGroups.forEach((Group g) -> { g.update(); });
+            allGroups.forEach((Group g) -> { 
+                // System.out.println(g.name);
+                g.update(); 
+            });
         }
     }
 
@@ -66,7 +78,7 @@ public class Group<Type> implements Iterable<Type> {
 
     @Override
     public String toString() {
-        return "-----\n" + set.toString() + "\nsize " + set.size() + "\nfactory " + factory.size() + "\ntrash " + trash.size() + "\n-----";
+        return name + "\tsize " + set.size() + "\tfactory " + factory.size() + "\ttrash " + trash.size();
     }
     
 }

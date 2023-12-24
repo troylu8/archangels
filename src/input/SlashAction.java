@@ -24,7 +24,6 @@ public class SlashAction extends KeyPressAction {
                 Util.sleepTilInterrupt(500);
                 Player.player.parryBodyActive = false;
             }, "enable parryBody for a short time thread").start();
-
         }
 
         if (Focus.focusedEnemy != null) {

@@ -198,7 +198,7 @@ public class RoomNode {
         // no strands when walk() generates thick paths
         // removeStrands();
 
-        addObstacles(random.nextInt(2, 5), random);
+        addObstacles(random);
 
         addGates();
         
@@ -309,7 +309,7 @@ public class RoomNode {
         return null;
     }
 
-    private static  boolean inBounds(int x, int y, int thickness) {
+    private static boolean inBounds(int x, int y, int thickness) {
         return y >= thickness && y < map.length - thickness && x >= thickness && x < map[0].length - thickness;
     }
     public static boolean inBounds(int x, int y) {
@@ -347,7 +347,20 @@ public class RoomNode {
         walk(x, y, step - 1, random);
     }
 
-    public void addObstacles(int amt, Random random) {
+    public void addObstacles(Random random) {
+        boolean[][] blocked = new boolean[map.length][map[0].length];
+
+        for (int h = 0; h < map.length; h++) {
+            for (int w = 0; w < map[0].length; w++) {
+                blocked[h][w] = map[h][w] == WATER;
+            }
+        }
+        for (int h = 0; h < map.length; h++) {
+            for (int w = 0; w < map[0].length; w++) {
+                if (!blocked)
+            }
+        }
+
         for (int i = 0; i < amt; i++) {
             ObstacleInfo ob = region.obstacles[random.nextInt(region.obstacles.length)];
             
@@ -357,30 +370,13 @@ public class RoomNode {
                 pos[0] = random.nextInt(ROOM_SIZE); 
                 pos[1] = random.nextInt(ROOM_SIZE); 
             }
-            while (!obstacleFitsHere(ob, pos[0], pos[1]));
+            while (!ob.fitsHere(pos[0], pos[1]));
             
             ob.placeObstacleAt(pos[0], pos[1]);
         }
     }
 
-    /** y and x are lower left corner 
-     * if theres a hole inside the corners of the obstacle, will return true. the obstacle will cover the hole anyways 
-    */
-    private boolean obstacleFitsHere(ObstacleInfo ob, int x, int y) {
-        final int[][] corners = { 
-            {y, x}, 
-            {y - ob.tileHitboxSize[1], x}, 
-            {y, x + ob.tileHitboxSize[0]}, 
-            {y - ob.tileHitboxSize[1], x + ob.tileHitboxSize[0]}
-        };
-
-        for (int[] c : corners) {
-            if (!inBounds(c[0], c[1]) || map[c[0]][c[1]] != LAND) {
-                return false;
-            }
-        }
-        return true;
-    }
+    
 
     public RoomNode getAdjacentRoom(int q, int r, int s) {
         return RoomNode.allRooms[this.q + q][ this.r + r][ this.s + s];

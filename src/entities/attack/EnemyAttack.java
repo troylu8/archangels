@@ -9,7 +9,7 @@ import src.util.Util;
 public abstract class EnemyAttack extends Attack {
     
     /** if dash inside a premonition, trigger mirage */
-    public static Group<HitboxList> allPremonitions = new Group<>();
+    public static Group<HitboxList> allPremonitions = new Group<>("allPremonitions");
 
     final int attackStartFrame;
     final int attackEndFrame;

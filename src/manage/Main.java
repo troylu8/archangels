@@ -46,11 +46,19 @@ public class Main { // out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
 
-        new DebugAction(KeyEvent.VK_6, () -> {  });
+        // SwordAngel sa = new SwordAngel(Player.player.x, Player.player.y);
+        // sa.enable();
+
+        // new DebugAction(KeyEvent.VK_6, () -> { CounterAction.enable(sa); });
+
+        new DebugAction(KeyEvent.VK_G, () -> { 
+            System.out.println("=============");
+            for (Group g : Group.allGroups) {
+                System.out.println(g.name);
+            } 
+            System.out.println("=============");
+        });
         
-        SwordAngel sa = new SwordAngel(Player.player.x, Player.player.y);
-        sa.enable();
-        CounterAction.enable(sa);
         Player.player.visible = true;
     }
 

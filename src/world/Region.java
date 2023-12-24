@@ -9,8 +9,10 @@ public class Region {
 
     public static Region TEST_REGION = new Region("cloud tiles", "torii.gif", 
         new ObstacleInfo[] {
-            new ObstacleInfo("pagoda.png", 2, 3),
-            new ObstacleInfo("pagoda 2.png", 4, 2)
+            new ObstacleInfo("pagoda.png", 2, 1),
+            new ObstacleInfo("pagoda 2.png", 4, 1, new boolean[][] {
+                {true, false, true, true}
+            })
         }, 
         new Spawner[]{
             new Spawner(1, () -> new SwordAngel(0, 0)),

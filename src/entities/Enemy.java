@@ -11,7 +11,7 @@ import src.shapes.*;
 
 public abstract class Enemy extends Being {
 
-    public static Group<Enemy> allEnemies = new Group<>();
+    public static Group<Enemy> allEnemies = new Group<>("allEnemies");
 
     final int ATK_COOLDOWN;
     final int AGGRO_RANGE;

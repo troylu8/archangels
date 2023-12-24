@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 public class Entity {
 
-    public static Group<Entity> allEntities = new Group<>();
+    public static Group<Entity> allEntities = new Group<>("allEntities");
     
     /** higher layers are painted on top */
     public static HashMap<Integer, Group<Entity>> entityLayers = new HashMap<>();
@@ -113,8 +113,11 @@ public class Entity {
                 if (layer.getValue().set.isEmpty()) 
                     trash[i++] = layer.getKey();
             }
-            for (int j = 0; j < i; j++) 
+            for (int j = 0; j < i; j++) {
+                entityLayers.get(trash[j]).disable();
                 entityLayers.remove(trash[j]);
+            }
+                
         }
     }
 
@@ -125,7 +128,7 @@ public class Entity {
         if (enabled) addToLayerGroup();
     }
     protected void addToLayerGroup() {
-        Group<Entity> layerGroup = entityLayers.getOrDefault(drawLayer, new Group<Entity>());
+        Group<Entity> layerGroup = entityLayers.getOrDefault(drawLayer, new Group<Entity>("layer group " + drawLayer));
         layerGroup.queueToAdd(this);
 
         synchronized(entityLayers) { entityLayers.put(drawLayer, layerGroup); }
@@ -345,7 +348,7 @@ public class Entity {
 
     @Override
     public String toString() {
-        return this.getClass() + " " + spriteFilename + " ( " + super.toString().split("@")[1] + " )\n";
+        return this.getClass() + " " + spriteFilename;
     }
 
 }

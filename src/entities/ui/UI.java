@@ -12,7 +12,7 @@ public class UI extends Entity {
     public static final Font BASE_FONT = new Font("arial", Font.PLAIN, 20); 
     public static Font font = BASE_FONT.deriveFont(1f);
 
-    public static Group<UI> allUI = new Group<>();
+    public static Group<UI> allUI = new Group<>("allUI");
 
     /** {0.5, 0.5} means always at the center of the screen */
     double[] ref;

@@ -89,8 +89,12 @@ public class PlayerSlash extends PlayerAttack {
         Being enemy = (Being) other;
         Player player = Player.player;
 
-        //TODO:
-        SlashFX.createSlash(enemy, 3.5, Util.directionToTheta(enemy.x - player.x, enemy.y - player.y), Clock.isPaused());
+        //TODO: sync
+        // new Thread(()-> { 
+            // System.out.println(Thread.currentThread());
+            // 
+            SlashFX.createSlash(enemy, 3.5, Util.directionToTheta(enemy.x - player.x, enemy.y - player.y), Clock.isPaused()); 
+        // }).start();
         new Thread(() -> {
             doHitlag(enemy, player);
 

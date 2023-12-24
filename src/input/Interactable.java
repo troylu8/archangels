@@ -7,7 +7,7 @@ public interface Interactable {
     
     static final int INTERACT_RANGE = 125;
 
-    static final Group<Interactable> allInteractables = new Group<>();
+    static final Group<Interactable> allInteractables = new Group<>("allInteractables");
 
     public abstract void onInteract();
 
