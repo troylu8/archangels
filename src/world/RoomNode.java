@@ -177,7 +177,7 @@ public class RoomNode {
 
     }
 
-    public static final int OBSTACLE_GRID_SIZE = 10;
+    public static final int OBSTACLE_GRID_SIZE = 5;
 
     public void setAsMap() {
         playerQ = q;
@@ -217,7 +217,7 @@ public class RoomNode {
 
     public void addEnemies() {
 
-        int enemyPoints = 5; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
+        int enemyPoints = 0; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
 
         int ceil = region.sortedCosts.length-1;
 
@@ -381,7 +381,7 @@ public class RoomNode {
                 // try placing obstacle 5 times
                 for (int i = 0; i < 5; i++) {
                     int[] pos = {
-                        random.nextInt(gridX, gridX + gridSize - ob.landArea[0]),
+                        random.nextInt(gridX, gridX + gridSize - ob.landArea[0] + 1),
                         random.nextInt(gridY + ob.landArea[1], gridY + gridSize),
                     };
 

@@ -1,7 +1,8 @@
 
+
+
 starstep clears collidingWith instead of making new hitboxes
 
-speedmultiplieradditive is not used
 
 - altar: put first tri at 90 +- ( (theta / 2) + 120 )   
 

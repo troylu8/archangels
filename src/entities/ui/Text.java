@@ -40,10 +40,10 @@ public class Text {
     }
 
     public void draw(Graphics2D g) {
-        if (localFOVratio != Canvas.FOVratio) {
-            font = originalFont.deriveFont((float) (originalFont.getSize() * Canvas.FOVratio));
-            localFOVratio = Canvas.FOVratio;
-        }
+        // if (localFOVratio != Canvas.FOVratio) {
+        //     font = originalFont.deriveFont((float) (originalFont.getSize() * Canvas.FOVratio));
+        //     localFOVratio = Canvas.FOVratio;
+        // }
         g.setColor(color);
         g.setFont(font);
 

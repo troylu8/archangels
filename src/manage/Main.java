@@ -8,6 +8,7 @@ import src.draw.*;
 import src.entities.*;
 import src.entities.attack.PlayerSlash;
 import src.entities.fx.TintFX;
+import src.entities.ui.FPS;
 import src.input.CounterAction;
 import src.input.DebugAction;
 import src.input.KeyBindManager;
@@ -55,6 +56,8 @@ public class Main { // TODO: out of bounds seed 1702397158781
         });
         
         Player.player.visible = true;
+
+        new FPS().enable();
     }
 
 }

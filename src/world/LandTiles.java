@@ -13,7 +13,7 @@ import src.manage.Main;
 public class LandTiles {
 
     public static final int TILE_SIZE = 64;
-    private int tileDrawSize = 64;
+    public int tileDrawSize = 64;
     private double localFOVratio = 1;
 
     // center, side, corner, corner inverted
@@ -25,6 +25,11 @@ public class LandTiles {
     // rotationMap[y][x][1] == # of times to rotate 90 degrees cw
     static int[][][] rotationMap;
 
+    Image center_original;
+    Image side_original;
+    Image corner_original;
+    Image corner_inverted_original;
+
     Image center;
     Image side;
     Image corner;
@@ -32,21 +37,48 @@ public class LandTiles {
 
     public LandTiles(String landTilesFolder) {
         landTilesFolder = "game files\\sprites\\tiles\\" + landTilesFolder;
-        center = getTileImage(landTilesFolder + "\\center.png");
-        side = getTileImage(landTilesFolder + "\\side.png");
-        corner = getTileImage(landTilesFolder + "\\corner.png");
-        corner_inverted = getTileImage(landTilesFolder + "\\corner inverted.png");
+        center_original = getTileImage(landTilesFolder + "\\center.png");
+        side_original = getTileImage(landTilesFolder + "\\side.png");
+        corner_original = getTileImage(landTilesFolder + "\\corner.png");
+        corner_inverted_original = getTileImage(landTilesFolder + "\\corner inverted.png");
+        updateTileSizes(64);
     }
 
     private Image getTileImage(String filepath) {
        return new ImageIcon(filepath).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
     }
 
+    private boolean tilesResized = false;
+
+    private void updateTileSizes(int tileDrawSize) {
+        tilesResized = false;
+        this.tileDrawSize = tileDrawSize; 
+        new Thread(() -> {
+            System.out.println("start");
+            Image temp1 = center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+            Image temp2 = side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+            Image temp3 = corner_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+            Image temp4 = corner_inverted_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+
+            center = temp1;
+            side = temp2;
+            corner = temp3;
+            corner_inverted = temp4;
+            
+            tilesResized = true;
+            System.out.println("end");
+        }).start();
+    }
+    
+    static int c = 0;
     public void draw(Graphics2D g2d) {
 
         // if FOVScale outdated, generate sprite to the right size
+        
         if (localFOVratio != Canvas.FOVratio) {
-            tileDrawSize = (int) (TILE_SIZE * Canvas.FOVratio);
+            updateTileSizes( (int) (TILE_SIZE * Canvas.FOVratio));
+            localFOVratio = Canvas.FOVratio;
+            System.out.println(c++);
         }
         
         int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
@@ -83,8 +115,8 @@ public class LandTiles {
                         img = region.landTiles.corner_inverted;
                         break;
                 }
-
-                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, tileDrawSize, tileDrawSize, null);
+                
+                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
                 g2d.setTransform(backup);
                 
             }
