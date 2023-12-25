@@ -10,7 +10,7 @@ public class SwordAngel extends Enemy {
 
     public SwordAngel(double x, double y) {
         super("oriental angel.png", x, y, 800, 0.25,
-            2500, 1, 100
+            2500, 600, 100
         );
 
         setSize(0.2);

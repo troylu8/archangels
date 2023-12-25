@@ -13,7 +13,7 @@ import src.manage.Main;
 public class LandTiles {
 
     public static final int TILE_SIZE = 64;
-    public int tileDrawSize = 64;
+    private int tileDrawSize = 64;
     private double localFOVratio = 1;
 
     // center, side, corner, corner inverted
@@ -42,23 +42,12 @@ public class LandTiles {
        return new ImageIcon(filepath).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
     }
 
-    private void updateTileSizes() {
-        center          = center.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
-        side            = side.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
-        corner          = corner.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
-        corner_inverted = corner_inverted.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
-    }
-    
-
     public void draw(Graphics2D g2d) {
 
         // if FOVScale outdated, generate sprite to the right size
         if (localFOVratio != Canvas.FOVratio) {
             tileDrawSize = (int) (TILE_SIZE * Canvas.FOVratio);
-            updateTileSizes();
-            System.out.println("a");
         }
-        
         
         int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
         int[] corner2 = getTilePos(Canvas.fov.x + Canvas.fov.width, Canvas.fov.y + Canvas.fov.height);
@@ -95,7 +84,7 @@ public class LandTiles {
                         break;
                 }
 
-                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
+                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, tileDrawSize, tileDrawSize, null);
                 g2d.setTransform(backup);
                 
             }
