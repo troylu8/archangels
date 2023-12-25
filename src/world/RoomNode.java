@@ -382,7 +382,7 @@ public class RoomNode {
                 for (int i = 0; i < 5; i++) {
                     int[] pos = {
                         random.nextInt(gridX, gridX + gridSize - ob.landArea[0] + 1),
-                        random.nextInt(gridY + ob.landArea[1], gridY + gridSize),
+                        random.nextInt(gridY + ob.landArea[1] - 1, gridY + gridSize),
                     };
 
                     if (ob.fitsHere(pos[0], pos[1])) {
