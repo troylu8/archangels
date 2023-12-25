@@ -81,16 +81,17 @@ class ObstacleDebug extends Entity {
 
     @Override
     public void draw(Graphics2D g) {
-        if (Main.drawHitboxes) {
+        int[] posOnCamera = getDrawPos();
 
-            int[] posOnCamera = getDrawPos();
-
+        if (Main.drawGrid) {
             g.setColor(Color.DARK_GRAY);
             g.drawRect(posOnCamera[0], (int) (posOnCamera[1] - LandTiles.getTrueVal(ob.landArea[1]) * Canvas.FOVratio), 
                 (int) (LandTiles.getTrueVal(ob.landArea[0]) * Canvas.FOVratio), 
                 (int) (LandTiles.getTrueVal(ob.landArea[1]) * Canvas.FOVratio)
             );
+        }
 
+        if (Main.drawHitboxes) {
 
             g.setColor(Color.BLUE);
 

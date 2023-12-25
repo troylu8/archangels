@@ -14,8 +14,9 @@ import src.input.KeyBindManager;
 import src.input.PlayerControls;
 import src.input.PlayerMovementControls;
 
-public class Main { // out of bounds seed 1702397158781
+public class Main { // TODO: out of bounds seed 1702397158781
 
+    public static boolean drawGrid = false;
     public static boolean drawSpriteBounds = false;
     public static boolean drawHitboxes = false;
 
@@ -35,10 +36,7 @@ public class Main { // out of bounds seed 1702397158781
         
         Gate.open();
 
-        new DebugAction(KeyEvent.VK_1, () -> {
-            if (Clock.isPaused())   Clock.unpause();
-            else                    Clock.pause(100);
-        });
+        new DebugAction(KeyEvent.VK_1, () -> { Main.drawGrid = !Main.drawGrid; });
         new DebugAction(KeyEvent.VK_2, () -> { Main.drawSpriteBounds = !Main.drawSpriteBounds; });
         new DebugAction(KeyEvent.VK_3, () -> { Main.drawHitboxes = !Main.drawHitboxes; });
 

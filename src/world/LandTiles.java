@@ -1,5 +1,6 @@
 package src.world;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -7,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
 
 import src.draw.Canvas;
+import src.manage.Main;
 
 public class LandTiles {
 
@@ -48,7 +50,6 @@ public class LandTiles {
             tileDrawSize[0] = (int) (TILE_SIZE * Canvas.FOVratio);
             tileDrawSize[1] = (int) (TILE_SIZE * Canvas.FOVratio);
         }
-             
         
         int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
         int[] corner2 = getTilePos(Canvas.fov.x + Canvas.fov.width, Canvas.fov.y + Canvas.fov.height);
@@ -90,6 +91,23 @@ public class LandTiles {
                 g2d.setTransform(backup);
             }
         }
+
+        if (Main.drawGrid) {
+
+            for (int y = corner1[1]; y < corner2[1] + 1; y++) {
+                g2d.setColor( (y % RoomNode.OBSTACLE_GRID_SIZE == 0)? Color.RED : Color.GRAY );
+                int drawPos = Canvas.getDrawPosWorld(0, LandTiles.getTrueVal(y))[1];
+                g2d.drawLine( 0, drawPos, Canvas.panel.getWidth(), drawPos);
+            }
+
+            for (int x = corner1[0]; x < corner2[0] + 1; x++) {
+                g2d.setColor( (x % RoomNode.OBSTACLE_GRID_SIZE == 0)? Color.RED : Color.GRAY );
+                int drawPos = Canvas.getDrawPosWorld(LandTiles.getTrueVal(x), 0)[0];
+                g2d.drawLine( drawPos, 0, drawPos, Canvas.panel.getHeight());
+            }
+            
+        }
+
     }
 
     public static void calculateRotationMap() {

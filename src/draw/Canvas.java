@@ -45,15 +45,18 @@ public class Canvas extends JPanel {
 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
+        // draw bg
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, getWidth(), getHeight());
-
+        
+        // draw tiles
         if (RoomNode.getCurrentRoom() != null) LandTiles.draw((Graphics2D) g);
         
         Integer[] layers = new Integer[Entity.entityLayers.keySet().size()];
         Entity.entityLayers.keySet().toArray(layers);
         Arrays.sort(layers);
 
+        // draw each layer
         for (int l : layers) {
 
             Entity.entityLayers.get(l).forEachSynced( (Entity e) -> {
@@ -71,13 +74,16 @@ public class Canvas extends JPanel {
         }
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
+        // draw bars
         g2d.setColor(Color.BLACK);
         g2d.fillRect(bar1.x, bar1.y, bar1.width, bar1.height);
         g2d.fillRect(bar2.x, bar2.y, bar2.width, bar2.height);
         
+        // draw premonitions
         g2d.setColor(Color.MAGENTA);
         EnemyAttack.allPremonitions.forEachSynced((HitboxList p) -> { p.draw(g2d); });
 
+        // draw ui
         UI.allUI.forEachSynced((UI ui) -> { ui.draw(g2d); });
 
     }

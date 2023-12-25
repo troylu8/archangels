@@ -177,6 +177,8 @@ public class RoomNode {
 
     }
 
+    public static final int OBSTACLE_GRID_SIZE = 10;
+
     public void setAsMap() {
         playerQ = q;
         playerR = r;
@@ -198,7 +200,7 @@ public class RoomNode {
         // no strands when walk() generates thick paths
         // removeStrands();
 
-        addObstacles(random);
+        addObstacles(random, OBSTACLE_GRID_SIZE);
 
         addGates();
         
@@ -347,33 +349,30 @@ public class RoomNode {
         walk(x, y, step - 1, random);
     }
 
-    public void addObstacles(Random random) {
-        boolean[][] blocked = new boolean[map.length][map[0].length];
+    public void addObstacles(Random random, int gridSize) {
 
-        for (int h = 0; h < map.length; h++) {
-            for (int w = 0; w < map[0].length; w++) {
-                blocked[h][w] = map[h][w] == WATER;
+        for (int gridY = 0; gridY < map.length; gridY += gridSize) {
+            for (int gridX = 0; gridX < map[0].length; gridX += gridSize) {
+
+                ObstacleInfo ob = region.obstacles[random.nextInt(region.obstacles.length)];
+
+                // try placing obstacle 5 times
+                for (int i = 0; i < 5; i++) {
+                    int[] pos = {
+                        random.nextInt(gridX, gridX + gridSize - ob.landArea[0]),
+                        random.nextInt(gridY + ob.landArea[1], gridY + gridSize),
+                    };
+
+                    if (ob.fitsHere(pos[0], pos[1])) {
+                        ob.placeObstacleAt(pos[0], pos[1]);
+                        break;
+                    }
+                        
+                }
+
             }
         }
-        for (int h = 0; h < map.length; h++) {
-            for (int w = 0; w < map[0].length; w++) {
-                if (!blocked)
-            }
-        }
 
-        for (int i = 0; i < amt; i++) {
-            ObstacleInfo ob = region.obstacles[random.nextInt(region.obstacles.length)];
-            
-            int[] pos = new int[2];
-
-            do { 
-                pos[0] = random.nextInt(ROOM_SIZE); 
-                pos[1] = random.nextInt(ROOM_SIZE); 
-            }
-            while (!ob.fitsHere(pos[0], pos[1]));
-            
-            ob.placeObstacleAt(pos[0], pos[1]);
-        }
     }
 
     
