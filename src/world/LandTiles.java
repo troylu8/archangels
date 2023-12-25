@@ -13,9 +13,8 @@ import src.manage.Main;
 public class LandTiles {
 
     public static final int TILE_SIZE = 64;
-    public static int[] tileDrawSize = {64, 64};
-    private static double localFOVratio = 1; 
-
+    public int tileDrawSize = 64;
+    private double localFOVratio = 1;
 
     // center, side, corner, corner inverted
     static final int CENTER = '.';
@@ -43,13 +42,23 @@ public class LandTiles {
        return new ImageIcon(filepath).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
     }
 
-    public static void draw(Graphics2D g2d) {
+    private void updateTileSizes() {
+        center          = center.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
+        side            = side.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
+        corner          = corner.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
+        corner_inverted = corner_inverted.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_DEFAULT);
+    }
+    
+
+    public void draw(Graphics2D g2d) {
 
         // if FOVScale outdated, generate sprite to the right size
         if (localFOVratio != Canvas.FOVratio) {
-            tileDrawSize[0] = (int) (TILE_SIZE * Canvas.FOVratio);
-            tileDrawSize[1] = (int) (TILE_SIZE * Canvas.FOVratio);
+            tileDrawSize = (int) (TILE_SIZE * Canvas.FOVratio);
+            updateTileSizes();
+            System.out.println("a");
         }
+        
         
         int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
         int[] corner2 = getTilePos(Canvas.fov.x + Canvas.fov.width, Canvas.fov.y + Canvas.fov.height);
@@ -64,7 +73,7 @@ public class LandTiles {
                 
                 AffineTransform backup = g2d.getTransform();
 
-                g2d.translate(cameraPos[0] + tileDrawSize[0]/2, cameraPos[1] + tileDrawSize[1]/2);
+                g2d.translate(cameraPos[0] + tileDrawSize/2, cameraPos[1] + tileDrawSize/2);
                 
                 g2d.rotate(Math.PI / 2 * rotationMap[tileY][tileX][1]);
 
@@ -86,9 +95,9 @@ public class LandTiles {
                         break;
                 }
 
-                g2d.drawImage(img, -tileDrawSize[0]/2, -tileDrawSize[1]/2, tileDrawSize[0], tileDrawSize[1], null);
-
+                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
                 g2d.setTransform(backup);
+                
             }
         }
 

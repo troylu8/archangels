@@ -44,9 +44,6 @@ public class Main { // TODO: out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
         new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
 
-        // SwordAngel sa = new SwordAngel(Player.player.x, Player.player.y);
-        // sa.enable();
-
         // new DebugAction(KeyEvent.VK_6, () -> { CounterAction.enable(sa); });
 
         new DebugAction(KeyEvent.VK_G, () -> { 

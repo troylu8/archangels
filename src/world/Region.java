@@ -20,8 +20,11 @@ public class Region {
         }
     );
     
+
+    public LandTiles landTiles;
+
     String gateGIF;
-    LandTiles landTiles;
+
     ObstacleInfo[] obstacles;
 
     Integer[] sortedCosts;

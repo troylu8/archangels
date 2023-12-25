@@ -50,7 +50,8 @@ public class Canvas extends JPanel {
         g2d.fillRect(0, 0, getWidth(), getHeight());
         
         // draw tiles
-        if (RoomNode.getCurrentRoom() != null) LandTiles.draw((Graphics2D) g);
+        if (RoomNode.getCurrentRoom() != null) 
+            RoomNode.getCurrentRoom().region.landTiles.draw((Graphics2D) g);
         
         Integer[] layers = new Integer[Entity.entityLayers.keySet().size()];
         Entity.entityLayers.keySet().toArray(layers);

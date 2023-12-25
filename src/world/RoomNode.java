@@ -200,6 +200,8 @@ public class RoomNode {
         // no strands when walk() generates thick paths
         // removeStrands();
 
+        updateLandRanges();
+
         addObstacles(random, OBSTACLE_GRID_SIZE);
 
         addGates();
@@ -215,7 +217,7 @@ public class RoomNode {
 
     public void addEnemies() {
 
-        int enemyPoints = 0; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
+        int enemyPoints = 5; //(int) Math.ceil(ENEMIES_SLOPE * getRadius());
 
         int ceil = region.sortedCosts.length-1;
 
@@ -229,22 +231,42 @@ public class RoomNode {
             ArrayList<SpawnFunction> choices = region.spawnFuncs.get(cost);
 
             Enemy enemy = choices.get( (int) (Math.random() * choices.size()) ).spawn();
-            int[] pos = randomLand();
-            int[] truePos = LandTiles.getTruePos(pos[0], pos[1]);
-            enemy.setPosition(truePos[0], truePos[1]);
+            int[] pos = getRandomLand();
+            enemy.setPosition(LandTiles.getTrueVal(pos[0]) + LandTiles.TILE_SIZE/2, LandTiles.getTrueVal(pos[1]) + LandTiles.TILE_SIZE/2);
             enemy.enable();
             
             enemyPoints -= cost;
         }
     }
 
-    public int[] randomLand() {
-        int[] res;
-        
-        do { res = new int[] { (int) (Math.random() * ROOM_SIZE), (int) (Math.random() * ROOM_SIZE) }; } 
-        while (map[res[0]][res[1]] != LAND);
-        
-        return res;
+    /** {x1, x2, y} inclusive */
+    private static ArrayList<int[]> landRanges;
+
+    private void updateLandRanges() {
+
+        landRanges = new ArrayList<>();
+
+        for (int y = 0; y < map.length; y++) {
+            
+            int x = 0;
+            while (true) {
+
+                while (x != map[y].length && map[y][x] != LAND) x++;
+                int start = x;
+                while (x != map[y].length && map[y][x] == LAND) x++;
+
+                if (x == map[y].length) break;
+
+                landRanges.add(new int[] {start, x-1, y});
+            }
+
+        }
+
+    }
+
+    public int[] getRandomLand() {
+        int[] range = landRanges.get((int) (Math.random() * landRanges.size()));
+        return new int[] { Util.rand(range[0], range[1]), range[2] };
     }
 
     public static RoomNode getCurrentRoom() {
