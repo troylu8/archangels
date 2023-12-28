@@ -137,18 +137,18 @@ public class Map extends UI {
                 else
                     g.setColor(UNCLEARED_COLOR);
 
-                final int drawnNodeSize = (int) (NODE_SIZE * Canvas.FOVratio);
+                final int drawnNodeSize = (int) (NODE_SIZE * Canvas.CAMratio);
                 g.fillOval(x - drawnNodeSize / 2, y - drawnNodeSize / 2, drawnNodeSize, drawnNodeSize);
 
                 for (int[] b : room.bridges) {
-                    int[] transform2D = hexDirectionToVector(b);
+                    int[] transform2D = hexDirectionToVector(b, NODE_DIST * Canvas.CAMratio);
 
                     g.drawLine(x, y, x + transform2D[0], y + transform2D[1]);
                 }
 
                 for (int[] d : RoomNode.HEX_DIRECTIONS) {
                     
-                    int[] transform2D = hexDirectionToVector(d);
+                    int[] transform2D = hexDirectionToVector(d, NODE_DIST * Canvas.CAMratio);
                     int[] newHexPos = new int[] {room.getQ() + d[0], room.getR() + d[1], room.getS() + d[2]};
 
                     if (RoomNode.allRooms[newHexPos[0]][newHexPos[1]][newHexPos[2]] != null && !drawn[newHexPos[0]][newHexPos[1]][newHexPos[2]]) {
@@ -161,10 +161,10 @@ public class Map extends UI {
             currDepth++;
         }
     }
-    public static int[] hexDirectionToVector(int[] hexDirection) {
+    public static int[] hexDirectionToVector(int[] hexDirection, double length) {
         int[] res = {
-            (int) (((hexDirection[2] <= 0 && hexDirection[0] >= 0)? NODE_DIST : -NODE_DIST) * Canvas.FOVratio),
-            (int) (NODE_DIST * hexDirection[1] * Canvas.FOVratio)
+            (int) (((hexDirection[2] <= 0 && hexDirection[0] >= 0)? length : -length)),
+            (int) (length * hexDirection[1])
         };
 
         // if moving vertically at all, horizontal distance halved

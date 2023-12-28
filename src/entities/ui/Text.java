@@ -4,6 +4,7 @@ import java.awt.*;
 
 import src.draw.Canvas;
 import src.manage.Main;
+import src.util.Util;
 
 public class Text {
 
@@ -16,8 +17,9 @@ public class Text {
     
     private Font originalFont;
     public Font font;
-    private double localFOVratio = 1;
     public Color color;
+
+    private double localCAMratio = 1;
 
     public String text;
 
@@ -40,27 +42,29 @@ public class Text {
     }
 
     public void draw(Graphics2D g) {
-        // if (localFOVratio != Canvas.FOVratio) {
-        //     font = originalFont.deriveFont((float) (originalFont.getSize() * Canvas.FOVratio));
-        //     localFOVratio = Canvas.FOVratio;
-        // }
+        if (localCAMratio != Canvas.CAMratio) {
+            font = originalFont.deriveFont((float) (originalFont.getSize() * Canvas.CAMratio));
+            localCAMratio = Canvas.CAMratio;
+        }
         g.setColor(color);
         g.setFont(font);
 
         FontMetrics fm = g.getFontMetrics(originalFont);
 
+
         double[] origin = {0, 0};
         if (parent != null) 
             origin = new double[] {parent.x, parent.y};
 
-        int[] drawPos = Canvas.getDrawPosUI(origin[0] + (x - alignment * fm.stringWidth(text)) * Canvas.FOVratio, 
-                                            origin[1] + y * Canvas.FOVratio);
+        int[] drawPos = Canvas.getDrawPosUI(origin[0] + (x - alignment * fm.stringWidth(text)) * Canvas.CAMratio, 
+                                            origin[1] + y * Canvas.CAMratio);
 
         g.drawString(text, drawPos[0], drawPos[1]);
 
         if (Main.drawSpriteBounds) {
             g.setColor(Color.ORANGE);
-            g.fillOval((int) (origin[0] + x * Canvas.FOVratio) - 5, (int) (origin[1] + y * Canvas.FOVratio) - 5, 10, 10);
+            System.out.println(Util.arrStr(origin));
+            g.fillOval((int) (origin[0] + x * Canvas.CAMratio) - 5, (int) (origin[1] + y * Canvas.CAMratio) - 5, 10, 10);
         }
     }
 

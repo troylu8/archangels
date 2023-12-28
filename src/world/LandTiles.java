@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import src.draw.Canvas;
 import src.manage.Main;
@@ -48,25 +49,27 @@ public class LandTiles {
        return new ImageIcon(filepath).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
     }
 
-    private boolean tilesResized = false;
+    private Object tilesResizedLock = false;
 
     private void updateTileSizes(int tileDrawSize) {
-        tilesResized = false;
         this.tileDrawSize = tileDrawSize; 
+        
         new Thread(() -> {
-            System.out.println("start");
-            Image temp1 = center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-            Image temp2 = side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-            Image temp3 = corner_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-            Image temp4 = corner_inverted_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+            synchronized (tilesResizedLock) {
+                System.out.println("start");
 
-            center = temp1;
-            side = temp2;
-            corner = temp3;
-            corner_inverted = temp4;
-            
-            tilesResized = true;
-            System.out.println("end");
+                Image temp1 = center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+                Image temp2 = side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+                Image temp3 = corner_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+                Image temp4 = corner_inverted_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+
+                center = temp1;
+                side = temp2;
+                corner = temp3;
+                corner_inverted = temp4;
+                
+                System.out.println("end");
+            }
         }).start();
     }
     
@@ -83,10 +86,11 @@ public class LandTiles {
         
         int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
         int[] corner2 = getTilePos(Canvas.fov.x + Canvas.fov.width, Canvas.fov.y + Canvas.fov.height);
-
-        for (int tileY = corner1[1]; tileY < corner2[1] + 2; tileY++) {
-            for (int tileX = corner1[0]; tileX < corner2[0] + 2; tileX++) {
-
+        
+        for (int tileY = corner1[1]; tileY < corner2[1] + 1; tileY++) {
+            
+            for (int tileX = corner1[0]; tileX < corner2[0] + 1; tileX++) {
+                
                 if (!RoomNode.isLandOrWall(tileX, tileY)) continue;
 
                 int[] pos = getTruePos(tileX, tileY);
@@ -115,12 +119,18 @@ public class LandTiles {
                         img = region.landTiles.corner_inverted;
                         break;
                 }
+                synchronized (tilesResizedLock) {
+                    // System.out.println(img.getWidth(null));
+                    g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
+                }
                 
-                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
                 g2d.setTransform(backup);
                 
+                
             }
+            // System.out.println();
         }
+        
 
         if (Main.drawGrid) {
 

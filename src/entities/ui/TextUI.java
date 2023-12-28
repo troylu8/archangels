@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import src.entities.Group;
 
 public class TextUI extends UI {
-    public Group<Text> texts = new Group<>("texts for " + this); 
+    private Group<Text> texts = new Group<>("texts for " + this); 
 
     public TextUI(String spriteFilename, double size, double refX, double refY, double offsetX, double offsetY, Text... text) {
         super(spriteFilename, 1, refX, refY, offsetX, offsetY);

@@ -23,8 +23,9 @@ public class Canvas extends JPanel {
     public static Rectangle fov = new Rectangle(0, 0, 1200, 675);
 
     /** actual view size on the panel, excluding black bars */
-    public static Rectangle camera = new Rectangle(0, 0, 800, 450);
-
+    private static int[] ORIGINAL_CAMERA_SIZE = {800, 450};
+    public static Rectangle camera = new Rectangle(0, 0, ORIGINAL_CAMERA_SIZE[0], ORIGINAL_CAMERA_SIZE[1]);
+    
     /** black bars when screen size isnt proportional to fov */
     public static Rectangle bar1 = new Rectangle();
     public static Rectangle bar2 = new Rectangle();
@@ -32,6 +33,10 @@ public class Canvas extends JPanel {
     /** camera.width / fov.width  
      * - actual view size (aka camera) will always stay the same aspect ratio as fov, black bars fill excess window area */
     public static double FOVratio = 1;
+    
+    /** (camera size) / (original camera size)  
+     * <p> used for resizing ui */
+    public static double CAMratio = 1;
 
     public Canvas() {
         addComponentListener(new ResizeListener());
@@ -191,6 +196,7 @@ public class Canvas extends JPanel {
             updateCameraAndBars();
            
             FOVratio = (double) camera.width / fov.width;
+            CAMratio = (double) camera.width / ORIGINAL_CAMERA_SIZE[0];
 
             UI.allUI.forEachSynced((UI ui) -> { ui.updatePos(); });
         }

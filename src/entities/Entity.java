@@ -36,7 +36,7 @@ public class Entity {
     /** do after animation finishes, before disabling */
     public Runnable endHook;
 
-    private BufferedImage originalSprite;
+    protected BufferedImage originalSprite;
     public BufferedImage sprite;
     
     /** latest FOVratio that this entity has been updated to; if localFOVratio != Canvas.FOVratio, must update drawnSprite */
@@ -44,7 +44,7 @@ public class Entity {
 
     /** size of sprite before FOVratio (on the same level as Canvas.fov) */
     public RectShape spriteBounds;
-    private double size;
+    protected double size;
 
     public boolean visible;
     public float opacity;
@@ -237,7 +237,7 @@ public class Entity {
 
         this.size = multiple;
 
-        spriteBounds.setSize(
+        spriteBounds.setSizeAndCenter(
             (int) (originalSprite.getWidth() * multiple), 
             (int) (originalSprite.getHeight() * multiple),
         x, y);

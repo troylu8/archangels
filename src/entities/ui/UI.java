@@ -1,6 +1,7 @@
 package src.entities.ui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import src.draw.Canvas;
 import src.entities.*;
@@ -21,6 +22,9 @@ public class UI extends Entity {
      * this ui will be drawn with a 10px gap between its right side and the edge of the camera.
      * (offset is shift in position after ui is positioned according to ref) */
     double[] offset;
+
+
+    private double localCAMratio = 1;
     
     public UI(String spriteFilename, double size, double refX, double refY, double offsetX, double offsetY) {
         super(spriteFilename, -1, -1,  size);
@@ -38,21 +42,17 @@ public class UI extends Entity {
         
         double newX = Canvas.camera.width * ref[0];
         newX = Util.clamp(newX, 0 + spriteBounds.getWidth() * getAnchorX(), Canvas.camera.width - (spriteBounds.getWidth() * (1 - getAnchorX())) );
-        newX += offset[0] * Canvas.FOVratio;
+        newX += offset[0] * Canvas.CAMratio;
 
         double newY = Canvas.camera.height * ref[1];
         newY = Util.clamp(newY, 0 + spriteBounds.getHeight() * getAnchorY(), Canvas.camera.height - (spriteBounds.getHeight() * (1 - getAnchorY())) );
-        newY += offset[1] * Canvas.FOVratio;
+        newY += offset[1] * Canvas.CAMratio;
 
         setPosition(newX, newY);
     }
 
-    /** for ui, spritebounds is directly equal to sprite size */
-    @Override
-    public void setSize(double multiple) {
-        super.setSize(multiple);
-        if (sprite != null) spriteBounds.setSize(sprite.getWidth(), sprite.getHeight(), x, y);
-    }
+    
+
 
     @Override
     public void enable() {
@@ -68,9 +68,51 @@ public class UI extends Entity {
 
     @Override
     protected int[] getDrawPos() { return Canvas.getDrawPosUI(x, y); }
+
+    @Override
+    public void setSize(double multiple) {
+        if (sprite == null) {
+            this.size = multiple;
+            return;
+        }
+        if (multiple <= 0) return;
+
+        int[] newBounds = {
+            (int) Math.ceil(originalSprite.getWidth() * multiple * Canvas.CAMratio), 
+            (int) Math.ceil(originalSprite.getHeight() * multiple * Canvas.CAMratio)
+        };
+
+        if (newBounds[0] <= 0 || newBounds[1] <= 0) {
+            System.out.println("new size is <= 0");
+            return;
+        }
+
+        this.size = multiple;
+
+        spriteBounds.setSizeAndCenter(
+            (int) (originalSprite.getWidth() * multiple), 
+            (int) (originalSprite.getHeight() * multiple),
+        x, y);
+        
+        Image newImg = originalSprite.getScaledInstance(newBounds[0], newBounds[1],  Image.SCALE_DEFAULT);
+        localCAMratio = Canvas.CAMratio;
+        
+        sprite = new BufferedImage(newBounds[0], newBounds[1], BufferedImage.TYPE_INT_ARGB);
+
+        Graphics g = sprite.getGraphics();
+        g.drawImage(newImg, 0, 0, null);
+        g.dispose();
+
+        /** for ui, spritebounds is directly equal to sprite size */
+        if (sprite != null) spriteBounds.setSizeAndCenter(sprite.getWidth(), sprite.getHeight(), x, y);
+    }
     
     @Override
     public void draw(Graphics2D g) {
+
+        if (localCAMratio != Canvas.CAMratio) 
+            setSize(size);
+        
         localFOVratio = Canvas.FOVratio;
         super.draw(g);
     }

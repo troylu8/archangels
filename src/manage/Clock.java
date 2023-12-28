@@ -3,6 +3,8 @@ package src.manage;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
+import javax.swing.SwingUtilities;
+
 import src.draw.Canvas;
 import src.entities.*;
 import src.input.Interactable;
@@ -116,7 +118,7 @@ public class Clock {
                     Entity.clearEmptyEntityLayers();
                     // System.out.println("finished update all");
 
-                    Canvas.panel.repaint();
+                    SwingUtilities.invokeLater(() -> { Canvas.panel.repaint(); });
 
                     Util.sleepTilInterrupt(5);
                 }

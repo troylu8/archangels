@@ -49,7 +49,7 @@ public class RectShape extends Polygon {
         if (vertexes != null) updatePoly();
     }
     /** set size, then center around point */
-    public void setSize(int width, int height, double centerX, double centerY) {
+    public void setSizeAndCenter(int width, int height, double centerX, double centerY) {
         rect.width = width;
         rect.height = height;
         centerSpriteAround(centerX, centerY);
