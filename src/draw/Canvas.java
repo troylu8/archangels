@@ -121,7 +121,6 @@ public class Canvas extends JPanel {
 
         if (Math.abs(deltaSize[0]) > 0.2 || Math.abs(deltaSize[1]) > 0.2) {
             ResizeListener.doOnResize();
-            System.out.println(Arrays.toString(deltaSize));
         }
             
     }
@@ -194,7 +193,6 @@ public class Canvas extends JPanel {
     }
 
     public static class ResizeListener extends ComponentAdapter {
-        static int c = 0;
         public static void doOnResize() {
            
             updateCameraAndBars();
@@ -204,11 +202,10 @@ public class Canvas extends JPanel {
 
             UI.allUI.forEachSynced((UI ui) -> { ui.updatePos(); });
 
-            System.out.println("done " + c++);
         }
         
         @Override
-        public void componentResized(ComponentEvent e) { doOnResize(); System.out.println("resized"); }
+        public void componentResized(ComponentEvent e) { doOnResize(); }
     }
 }
 

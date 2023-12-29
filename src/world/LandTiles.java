@@ -1,12 +1,11 @@
 package src.world;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
+import javax.imageio.ImageIO;
 
 import src.draw.Canvas;
 import src.manage.Main;
@@ -26,51 +25,51 @@ public class LandTiles {
     // rotationMap[y][x][1] == # of times to rotate 90 degrees cw
     static int[][][] rotationMap;
 
-    Image center_original;
-    Image side_original;
-    Image corner_original;
-    Image corner_inverted_original;
+    BufferedImage center_original;
+    BufferedImage side_original;
+    BufferedImage corner_original;
+    BufferedImage corner_inverted_original;
 
-    Image center;
-    Image side;
-    Image corner;
-    Image corner_inverted;
+    BufferedImage center;
+    BufferedImage side;
+    BufferedImage corner;
+    BufferedImage corner_inverted;
 
     public LandTiles(String landTilesFolder) {
         landTilesFolder = "game files\\sprites\\tiles\\" + landTilesFolder;
-        center_original = getTileImage(landTilesFolder + "\\center.png");
-        side_original = getTileImage(landTilesFolder + "\\side.png");
-        corner_original = getTileImage(landTilesFolder + "\\corner.png");
-        corner_inverted_original = getTileImage(landTilesFolder + "\\corner inverted.png");
+
+        try {
+            center_original = ImageIO.read(new File(landTilesFolder + "\\center.png"));
+            side_original = ImageIO.read(new File(landTilesFolder + "\\side.png"));
+            corner_original = ImageIO.read(new File(landTilesFolder + "\\corner.png"));
+            corner_inverted_original = ImageIO.read(new File(landTilesFolder + "\\corner inverted.png"));
+        
+            center = center_original;
+            side = side_original;
+            corner = corner_original;
+            corner_inverted = corner_inverted_original;
+        } 
+        catch (IOException e) {e.printStackTrace();}
+        
         updateTileSizes(64);
     }
 
-    private Image getTileImage(String filepath) {
-       return new ImageIcon(filepath).getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
-    }
-
-    private Object tilesResizedLock = false;
-
     private void updateTileSizes(int tileDrawSize) {
         this.tileDrawSize = tileDrawSize; 
-        
-        // new Thread(() -> {
-        //     synchronized (tilesResizedLock) {
-        //         System.out.println("start");
+        center = toBufferedImage(center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST));
+        side = toBufferedImage(side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST));
+        corner = toBufferedImage(corner_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST));
+        corner_inverted = toBufferedImage(corner_inverted_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST));
+    }
 
-                Image temp1 = center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-                Image temp2 = side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-                Image temp3 = corner_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
-                Image temp4 = corner_inverted_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
+    private BufferedImage toBufferedImage(Image img) {
+        BufferedImage res = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-                center = temp1;
-                side = temp2;
-                corner = temp3;
-                corner_inverted = temp4;
-                
-        //         System.out.println("end");
-        //     }
-        // }).start();
+        Graphics2D g = res.createGraphics();
+        g.drawImage(img, 0, 0, null);
+        g.dispose();
+
+        return res;
     }
     
     static int c = 0;
@@ -81,7 +80,6 @@ public class LandTiles {
         if (localFOVratio != Canvas.FOVratio) {
             updateTileSizes( (int) (TILE_SIZE * Canvas.FOVratio));
             localFOVratio = Canvas.FOVratio;
-            System.out.println(c++);
         }
         
         int[] corner1 = getTilePos(Canvas.fov.getX(), Canvas.fov.getY());
@@ -119,16 +117,14 @@ public class LandTiles {
                         img = region.landTiles.corner_inverted;
                         break;
                 }
-                synchronized (tilesResizedLock) {
-                    // System.out.println(img.getWidth(null));
-                    g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
-                }
+
+                g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, null);
+                // g2d.drawImage(img, -tileDrawSize/2, -tileDrawSize/2, tileDrawSize, tileDrawSize, null);
                 
                 g2d.setTransform(backup);
                 
                 
             }
-            // System.out.println();
         }
         
 
