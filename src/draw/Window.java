@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.JFrame;
 
 import src.input.PlayerMovementControls;
+import src.util.Util;
 
 public class Window extends JFrame {
 
@@ -22,7 +23,13 @@ public class Window extends JFrame {
         
         setLocationRelativeTo(null);
 
-        addWindowStateListener(new CenterWhenWindowed());
+        addWindowStateListener((WindowEvent e) -> { 
+            new Thread(() -> {
+                Util.sleepTilInterrupt(40);
+                Canvas.ResizeListener.doOnResize(); 
+            }).start();
+            
+            System.out.println("a"); });
         addWindowFocusListener(new StopAfterFocusLost());
 
         setVisible(true);
@@ -30,18 +37,6 @@ public class Window extends JFrame {
     }
 
     
-}
-
-class CenterWhenWindowed implements WindowStateListener {
-    @Override
-    public void windowStateChanged(WindowEvent e) {        
-        if (e.getNewState() == 0)
-            ((Window) e.getSource()).setLocationRelativeTo(null);       
-        
-        
-        Canvas.ResizeListener.doOnResize();
-        
-    }
 }
 
 class StopAfterFocusLost implements WindowFocusListener {

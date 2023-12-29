@@ -20,7 +20,8 @@ public class Canvas extends JPanel {
     public static Canvas panel;
     
     /** how far the player can see */
-    public static Rectangle fov = new Rectangle(0, 0, 1200, 675);
+    public static DoubleRect fov = new DoubleRect(0, 0, 1200, 675);
+
 
     /** actual view size on the panel, excluding black bars */
     private static int[] ORIGINAL_CAMERA_SIZE = {800, 450};
@@ -30,7 +31,7 @@ public class Canvas extends JPanel {
     public static Rectangle bar1 = new Rectangle();
     public static Rectangle bar2 = new Rectangle();
 
-    /** camera.width / fov.width  
+    /** camera.width / fov.getWidth()  
      * - actual view size (aka camera) will always stay the same aspect ratio as fov, black bars fill excess window area */
     public static double FOVratio = 1;
     
@@ -96,30 +97,33 @@ public class Canvas extends JPanel {
 
     public static double[] targetFOVcenter = {0,0};
     private static double[] screenshakeForces = {0,0};
-    public static int[] targetFOVsize = {fov.width, fov.height}; 
+    public static double[] targetFOVsize = { fov.getWidth(), fov.getHeight()}; 
 
-    public static void setFOVsizeByWidth(int width) {
+    public static void setFOVsizeByWidth(double width) {
         targetFOVsize[0] = width;
-        targetFOVsize[1] = (int) (width * ((double)fov.height / fov.width));
-        
+        targetFOVsize[1] = width * fov.getHeight() / fov.getWidth();
     }
 
     public static void updateFOV() {
 
-        double[] deltaSize = {(targetFOVsize[0] - fov.width) * 0.2, (targetFOVsize[1] - fov.height) * 0.2};
-        fov.width += deltaSize[0];
-        fov.height += deltaSize[1];
-        fov.x -= deltaSize[0]/2;
-        fov.y -= deltaSize[1]/2;
+        double[] deltaSize = {(targetFOVsize[0] - fov.getWidth()) * 0.2, (targetFOVsize[1] - fov.getHeight()) * 0.2};
+        fov.setWidth(fov.getWidth() + deltaSize[0]);
+        fov.setHeight(fov.getHeight() + deltaSize[1]);
+        fov.transform(-deltaSize[0]/2, -deltaSize[1]/2);
 
-        int targetX = (int) targetFOVcenter[0] - fov.width / 2;
-        int targetY = (int) targetFOVcenter[1] - fov.height / 2;
+        double targetX = targetFOVcenter[0] - fov.getWidth() / 2;
+        double targetY = targetFOVcenter[1] - fov.getHeight() / 2;
 
-        fov.x += (targetX - fov.x) * 0.2 + screenshakeForces[0];
-        fov.y += (targetY - fov.y) * 0.2 + screenshakeForces[1];
+        fov.transform(
+            (targetX - fov.getX()) * 0.2 + screenshakeForces[0],
+            (targetY - fov.getY()) * 0.2 + screenshakeForces[1]
+        );
 
-        if (deltaSize[0] != 0 || deltaSize[1] != 0)
+        if (Math.abs(deltaSize[0]) > 0.2 || Math.abs(deltaSize[1]) > 0.2) {
             ResizeListener.doOnResize();
+            System.out.println(Arrays.toString(deltaSize));
+        }
+            
     }
 
     private static Thread screenshakeThread = new Thread();
@@ -150,9 +154,9 @@ public class Canvas extends JPanel {
         int panelHeight = Canvas.panel.getHeight();
 
         // top-bottom black bars
-        if ((double) panelWidth / fov.width < (double) panelHeight / fov.height) {
+        if ((double) panelWidth / fov.getWidth() < (double) panelHeight / fov.getHeight()) {
             camera.width = panelWidth;
-            camera.height = (int) (double) panelWidth * fov.height / fov.width;
+            camera.height = (int) (panelWidth * fov.getHeight() / fov.getWidth());
 
             camera.y = (panelHeight / 2) - (camera.height / 2);
             camera.x = 0;
@@ -163,7 +167,7 @@ public class Canvas extends JPanel {
         // left-right black bars
         else {
             camera.height = panelHeight;
-            camera.width = (int) (double) panelHeight * fov.width / fov.height;
+            camera.width = (int) (panelHeight * fov.getWidth() / fov.getHeight());
 
             camera.x = (panelWidth / 2) - (camera.width / 2);
             camera.y = 0;
@@ -177,8 +181,8 @@ public class Canvas extends JPanel {
     /** given an absolute point, find where on the panel it would be (taking into account pos relative to fov, FOVratio, and black bars) */
     public static int[] getDrawPosWorld(double x, double y) {
         return new int[] { 
-            (int) ((x - fov.x) * FOVratio + camera.x),
-            (int) ((y - fov.y) * FOVratio + camera.y)
+            (int) ((x - fov.getX()) * FOVratio + camera.x),
+            (int) ((y - fov.getY()) * FOVratio + camera.y)
         };
     }
 
@@ -189,19 +193,22 @@ public class Canvas extends JPanel {
         };
     }
 
-    static class ResizeListener extends ComponentAdapter {
-
+    public static class ResizeListener extends ComponentAdapter {
+        static int c = 0;
         public static void doOnResize() {
            
             updateCameraAndBars();
            
-            FOVratio = (double) camera.width / fov.width;
+            FOVratio = (double) camera.width / fov.getWidth();
             CAMratio = (double) camera.width / ORIGINAL_CAMERA_SIZE[0];
 
             UI.allUI.forEachSynced((UI ui) -> { ui.updatePos(); });
+
+            System.out.println("done " + c++);
         }
         
         @Override
-        public void componentResized(ComponentEvent e) { doOnResize(); }
+        public void componentResized(ComponentEvent e) { doOnResize(); System.out.println("resized"); }
     }
 }
+

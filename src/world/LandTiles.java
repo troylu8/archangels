@@ -54,9 +54,9 @@ public class LandTiles {
     private void updateTileSizes(int tileDrawSize) {
         this.tileDrawSize = tileDrawSize; 
         
-        new Thread(() -> {
-            synchronized (tilesResizedLock) {
-                System.out.println("start");
+        // new Thread(() -> {
+        //     synchronized (tilesResizedLock) {
+        //         System.out.println("start");
 
                 Image temp1 = center_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
                 Image temp2 = side_original.getScaledInstance(tileDrawSize, tileDrawSize, Image.SCALE_FAST);
@@ -68,9 +68,9 @@ public class LandTiles {
                 corner = temp3;
                 corner_inverted = temp4;
                 
-                System.out.println("end");
-            }
-        }).start();
+        //         System.out.println("end");
+        //     }
+        // }).start();
     }
     
     static int c = 0;
@@ -84,8 +84,8 @@ public class LandTiles {
             System.out.println(c++);
         }
         
-        int[] corner1 = getTilePos(Canvas.fov.x, Canvas.fov.y);
-        int[] corner2 = getTilePos(Canvas.fov.x + Canvas.fov.width, Canvas.fov.y + Canvas.fov.height);
+        int[] corner1 = getTilePos(Canvas.fov.getX(), Canvas.fov.getY());
+        int[] corner2 = getTilePos(Canvas.fov.getX() + Canvas.fov.getWidth(), Canvas.fov.getY() + Canvas.fov.getHeight());
         
         for (int tileY = corner1[1]; tileY < corner2[1] + 1; tileY++) {
             

@@ -9,11 +9,7 @@ import src.entities.*;
 import src.entities.attack.PlayerSlash;
 import src.entities.fx.TintFX;
 import src.entities.ui.FPS;
-import src.input.CounterAction;
-import src.input.DebugAction;
-import src.input.KeyBindManager;
-import src.input.PlayerControls;
-import src.input.PlayerMovementControls;
+import src.input.*;
 
 public class Main { // TODO: out of bounds seed 1702397158781
 
@@ -41,18 +37,13 @@ public class Main { // TODO: out of bounds seed 1702397158781
         new DebugAction(KeyEvent.VK_2, () -> { Main.drawSpriteBounds = !Main.drawSpriteBounds; });
         new DebugAction(KeyEvent.VK_3, () -> { Main.drawHitboxes = !Main.drawHitboxes; });
 
-
-        new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width - 200); });
-        new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.width + 200); });
-
-        // new DebugAction(KeyEvent.VK_6, () -> { CounterAction.enable(sa); });
+        new DebugAction(KeyEvent.VK_4, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.getWidth() - 200); });
+        new DebugAction(KeyEvent.VK_5, () -> { Canvas.setFOVsizeByWidth(Canvas.fov.getWidth() + 200); });
+        
+        new DebugAction(KeyEvent.VK_6, () -> { Canvas.ResizeListener.doOnResize(); });
 
         new DebugAction(KeyEvent.VK_G, () -> { 
-            System.out.println("=============");
-            for (Group g : Group.allGroups) {
-                System.out.println(g.name);
-            } 
-            System.out.println("=============");
+            new Entity("tiles\\cloud tiles\\corner.png", Player.player.x, Player.player.y).enable();
         });
         
         Player.player.visible = true;
